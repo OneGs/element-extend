@@ -1,0 +1,226 @@
+@import "~element-ui/packages/theme-chalk/src/mixins/mixins";
+@import "~element-ui/packages/theme-chalk/src/common/var";
+
+.arrow {
+  width: 24px;
+  display: table-cell;
+  vertical-align: middle;
+  text-align: center;
+}
+
+@include b(select-tree) {
+  width: 100%;
+  position: relative;
+  display: inline-block;
+
+  /* input */
+
+  .el-input__inner {
+    cursor: pointer;
+
+    &:focus {
+      border-color: $--select-input-focus-border-color;
+    }
+  }
+
+  .is-focus .el-input__inner {
+    border-color: $--select-input-focus-border-color;
+  }
+
+  .el-tag__close.el-icon-close {
+    flex-shrink: 0;
+    color: $--color-white;;
+    background-color: $--color-text-placeholder;
+
+    &:hover {
+      color: #FFFFFF;
+      background-color: #909399;
+    }
+  }
+
+  @include e(caret) {
+    font-size: 14px;
+    color: $--color-text-placeholder;
+    transition: transform .3s;
+    transform: rotateZ(180deg);
+    cursor: pointer;
+
+    &.is-reverse {
+      transform: rotateZ(0deg);
+    }
+  }
+
+  /* menu */
+
+  @include e(menu) {}
+
+  @include e(list-item) {
+    display: block;
+  }
+
+  @include e(value-multi) {
+    position: relative;
+  }
+
+  /* option */
+
+  @include e(option) {
+    height: 34px;
+    line-height: 34px;
+    display: flex;
+    align-items: center;
+
+    &:hover {
+      background-color: $--select-option-hover-background;
+    }
+
+    @include m(selected){
+      font-weight: bold;
+      color: $--select-option-selected-font-color;
+      background-color: $--select-dropdown-background;
+    }
+
+    @include m(highlight) {
+      background-color: $--select-option-hover-background;
+    }
+
+    @include m(disabled) {
+      cursor: not-allowed;
+      color: $--font-color-disabled-base;
+    }
+
+    @include m(hide) {
+      display: none;
+    }
+
+    &.is-flat-result {
+      padding: 0 20px !important;
+    }
+
+    @include m(matched) {
+      &.is-flat-result {
+        padding: 0 20px !important;
+      }
+    }
+  }
+
+  @include e(option-arrow-container) {
+    @extend .arrow;
+  }
+
+  @include e(option-arrow-placeholder) {
+    @extend .arrow;
+  }
+
+  @include e(checkbox-container) {
+    display: table-cell;
+    width: 20px;
+    min-width: 20px;
+    height: 100%;
+    text-align: center;
+    vertical-align: middle;
+  }
+
+  @include e(checkbox) {
+    margin: auto;
+    display: block;
+    border-radius: 2px;
+    transition: all .2s cubic-bezier(.075,.82,.165,1);
+
+    @include m(unchecked) {
+      background: #fff;
+      border-color: #e0e0e0;
+    }
+
+    @include m(indeterminate) {
+      border-color: $--color-primary;
+      background: $--color-primary;
+    }
+  }
+
+  @include e(loading-icon) {
+    height: 13px;
+    margin: 0 4px;
+  }
+
+  @include e(retry) {
+    cursor: pointer;
+    display: inline-block;
+    margin-left: 4px;
+  }
+
+  /** icon */
+
+  @include e(icon-item) {
+    font-size: 12px;
+    padding: 6px;
+    cursor: pointer;
+    color: $--color-text-placeholder;
+    transform: rotate(0deg);
+    transition: transform 0.3s ease-in-out;
+  }
+
+  @include e(option-arrow--rotated) {
+    transform: rotate(90deg);
+  }
+
+  /* label */
+
+  @include e(label-container) {
+    flex: 1;
+    width: 100%;
+    font-size: 14px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+  }
+
+  @include e(label) {
+    cursor: pointer;
+    max-width: 100%;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    padding-left: 5px;
+    vertical-align: middle;
+  }
+
+  /* tags */
+
+  .el-tag {
+    box-sizing: border-box;
+    border-color: transparent;
+    margin: 2px 0 2px 6px;
+    background-color: $--cascader-tag-background;
+    display: flex;
+    max-width: 100%;
+    align-items: center;
+  }
+
+  @include e(tags) {
+    position: absolute;
+    z-index: 1;
+    top: 50%;
+    transform: translateY(-50%);
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+  }
+
+  /* tips */
+
+  @include e(tip-text) {
+    padding: 10px 0;
+    margin: 0;
+    text-align: center;
+    color: #999;
+    font-size: 14px;
+    display: inline-block;
+    width: 100%;
+    box-sizing: border-box;
+
+    &.is-left {
+      text-align: left;
+    }
+  }
+}
