@@ -17,8 +17,9 @@ export default {
   computed: {
     showClose() {
       const { instance } = this;
+      const { isOpen } = instance.menu;
 
-      return instance.clearable && instance.hasValue && this.inputHovering;
+      return !isOpen && instance.clearable && instance.hasValue && this.inputHovering;
     },
   },
 
