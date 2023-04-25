@@ -14,17 +14,35 @@
 const OPTIONS = [
   {
     id: "fruits 1",
-    label: "Fruits",
+    label: "丰富水果 Fruits",
     children: [
       {
         id: "apple",
-        label: "This  Apple 🍎",
+        label: "苹果 This  Apple 🍎",
         isNew: true,
       },
       {
         id: "grapes",
-        label: "Grapes 🍇",
-        isDisabled: true,
+        label: "葡萄 Grapes 🍇",
+        children: [
+          {
+            id: "corn x",
+            label: "玉米 This Corn 🌽",
+          },
+          {
+            id: "carrot x",
+            label: "胡萝卜 Carrot 🥕",
+            isDisabled: true,
+          },
+          {
+            id: "eggplant x",
+            label: "茄子 Eggplant 🍆",
+          },
+          {
+            id: "tomato x",
+            label: "西红柿 Tomato 🍅",
+          },
+        ],
       },
       {
         id: "pear",
