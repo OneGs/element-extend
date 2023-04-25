@@ -1,28 +1,32 @@
 <script>
-import Input from './input.vue';
+import Input from "./input.vue";
 
 export default {
-  name: 'vue-treeselect--single-value',
+  name: "vue-treeselect--single-value",
 
-  inject: ['instance'],
+  inject: ["instance"],
 
   components: {
-    Input
+    Input,
   },
 
   watch: {
     // 根据选中值，变化显示
-    'instance.forest.selectedNodeIds': {
+    "instance.forest.selectedNodeIds": {
       handler(val) {
         const { instance } = this;
 
         const input = this.getInput();
-        input.setValueAndPlaceholder(this.getSelectedLabel(), !val.length && instance.placeholder, !this.getSelectedLabel());
-      }
+        input.setValueAndPlaceholder(
+          this.getSelectedLabel(),
+          !val.length && instance.placeholder,
+          !this.getSelectedLabel(),
+        );
+      },
     },
 
     // 根据menu的显隐，判断当前值的显示
-    'instance.menu.isOpen': {
+    "instance.menu.isOpen": {
       handler(val) {
         const { instance } = this;
         const input = this.getInput();
@@ -32,13 +36,13 @@ export default {
           input.setValueAndPlaceholder(null, instance.placeholder, true);
         } else {
           this.getSelectedLabel()
-            // 关闭，存在选中值，value还原为选中值，placeholder还原
-            ? input.setValueAndPlaceholder(this.getSelectedLabel(), instance.placeholder, true)
-            // 不存在值，value还原为空，placeholder还原
-            : input.setValueAndPlaceholder(null, instance.placeholder, true);
+            ? // 关闭，存在选中值，value还原为选中值，placeholder还原
+              input.setValueAndPlaceholder(this.getSelectedLabel(), instance.placeholder, true)
+            : // 不存在值，value还原为空，placeholder还原
+              input.setValueAndPlaceholder(null, instance.placeholder, true);
         }
-      }
-    }
+      },
+    },
   },
 
   methods: {
@@ -46,10 +50,8 @@ export default {
       const { instance } = this;
       const node = instance.selectedNodes[0];
 
-      const customValueLabelRenderer = instance.$scopedSlots['value-label'];
-      return customValueLabelRenderer
-        ? customValueLabelRenderer({ node })
-        : node && node.label;
+      const customValueLabelRenderer = instance.$scopedSlots["value-label"];
+      return customValueLabelRenderer ? customValueLabelRenderer({ node }) : node && node.label;
     },
 
     getSelectedLabel() {
@@ -58,7 +60,7 @@ export default {
 
     getInput() {
       return this.$refs.input;
-    }
+    },
   },
 
   mounted() {
@@ -69,11 +71,7 @@ export default {
   },
 
   render() {
-    return (
-      <Input ref="input">
-        { this.$slots.default }
-      </Input>
-    );
-  }
+    return <Input ref="input">{this.$slots.default}</Input>;
+  },
 };
 </script>

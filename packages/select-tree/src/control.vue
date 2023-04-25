@@ -1,16 +1,16 @@
 <script>
-import SingleValue from './value-single.vue';
-import MultiValue from './value-multi.vue';
-import {isPromise, onLeftClick} from './utils';
+import SingleValue from "./value-single.vue";
+import MultiValue from "./value-multi.vue";
+import { isPromise, onLeftClick } from "./utils";
 
 export default {
-  name: 'el-select-tree-control',
+  name: "el-select-tree-control",
 
-  inject: ['instance'],
+  inject: ["instance"],
 
   data() {
     return {
-      inputHovering: false
+      inputHovering: false,
     };
   },
 
@@ -19,7 +19,7 @@ export default {
       const { instance } = this;
 
       return instance.clearable && instance.hasValue && this.inputHovering;
-    }
+    },
   },
 
   methods: {
@@ -42,30 +42,25 @@ export default {
 
     renderX() {
       const classes = {
-        'el-select-tree__caret': true,
-        'el-icon-circle-close': true,
-        'el-input__icon': true
+        "el-select-tree__caret": true,
+        "el-icon-circle-close": true,
+        "el-input__icon": true,
       };
 
-      return (
-        <i
-          class={classes}
-          onMousedown={this.handleMouseDownOnX}
-        />
-      );
+      return <i class={classes} onMousedown={this.handleMouseDownOnX} />;
     },
 
     renderArrow() {
       const { instance } = this;
       const expandClasses = {
-        'el-select-tree__caret': true,
-        'el-icon-arrow-up': true,
-        'el-input__icon': true,
-        'is-reverse': instance.menu.isOpen
+        "el-select-tree__caret": true,
+        "el-icon-arrow-up": true,
+        "el-input__icon": true,
+        "is-reverse": instance.menu.isOpen,
       };
 
       return <i v-show={!this.showClose} class={expandClasses} />;
-    }
+    },
   },
 
   render() {
@@ -84,12 +79,12 @@ export default {
         onMouseenter={() => setInputHovering(true)}
         onMouseleave={() => setInputHovering(false)}>
         <ValueContainer ref="value-container">
-          { this.showClose && this.renderX()}
-          { this.renderArrow() }
+          {this.showClose && this.renderX()}
+          {this.renderArrow()}
         </ValueContainer>
       </div>
     );
-  }
+  },
 };
 </script>
 
@@ -99,4 +94,3 @@ export default {
 2. 点击展开menu
 3. 单选、多选的策略选择
 -->
-

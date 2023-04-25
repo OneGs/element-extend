@@ -1,7 +1,7 @@
 <script>
-import ElInput from 'element-ui/packages/input';
-import {debounce, includes} from './utils';
-import {INPUT_DEBOUNCE_DELAY, KEY_CODES} from './constants';
+import ElInput from "element-ui/packages/input";
+import { debounce, includes } from "./utils";
+import { INPUT_DEBOUNCE_DELAY, KEY_CODES } from "./constants";
 
 const keysThatRequireMenuBeingOpen = [
   KEY_CODES.ENTER,
@@ -10,23 +10,23 @@ const keysThatRequireMenuBeingOpen = [
   KEY_CODES.ARROW_LEFT,
   KEY_CODES.ARROW_UP,
   KEY_CODES.ARROW_RIGHT,
-  KEY_CODES.ARROW_DOWN
+  KEY_CODES.ARROW_DOWN,
 ];
 
 export default {
-  name: 'IInput',
+  name: "IInput",
 
-  inject: ['instance'],
+  inject: ["instance"],
 
   components: {
-    ElInput
+    ElInput,
   },
 
   data() {
     return {
       initialInputHeight: 0,
       currentPlaceholder: null,
-      selectedLabel: null
+      selectedLabel: null,
     };
   },
 
@@ -35,7 +35,7 @@ export default {
       const { instance } = this;
 
       return !instance.searchable || !instance.menu.isOpen || instance.multiple;
-    }
+    },
   },
 
   methods: {
@@ -43,15 +43,11 @@ export default {
       const { instance } = this;
       // https://css-tricks.com/snippets/javascript/javascript-keycodes/
       // https://stackoverflow.com/questions/4471582/javascript-keycode-vs-which
-      const key =
-          'which' in evt ? evt.which : /* istanbul ignore next */ evt.keyCode;
+      const key = "which" in evt ? evt.which : /* istanbul ignore next */ evt.keyCode;
 
       if (evt.ctrlKey || evt.shiftKey || evt.altKey || evt.metaKey) return;
 
-      if (
-        !instance.menu.isOpen &&
-          includes(keysThatRequireMenuBeingOpen, key)
-      ) {
+      if (!instance.menu.isOpen && includes(keysThatRequireMenuBeingOpen, key)) {
         evt.preventDefault();
         return instance.openMenu();
       }
@@ -100,11 +96,7 @@ export default {
           if (current.isBranch && instance.shouldExpand(current)) {
             evt.preventDefault();
             instance.toggleExpanded(current);
-          } else if (
-            !current.isRootNode &&
-              (current.isLeaf ||
-                  (current.isBranch && !instance.shouldExpand(current)))
-          ) {
+          } else if (!current.isRootNode && (current.isLeaf || (current.isBranch && !instance.shouldExpand(current)))) {
             evt.preventDefault();
             instance.setCurrentHighlightedOption(current.parentNode);
           }
@@ -167,18 +159,15 @@ export default {
       const sizeMap = {
         medium: 36,
         small: 32,
-        mini: 28
+        mini: 28,
       };
-      const inputEle = input.$el.querySelector('input');
+      const inputEle = input.$el.querySelector("input");
       const tags = this.$parent.$refs.tags;
       const tagsHeight = tags ? tags.getBoundingClientRect().height : 0;
       const sizeInMap = sizeMap[instance.selectSize] || 40;
       inputEle.style.height = !instance.hasValue
-        ? sizeInMap + 'px'
-        : Math.max(
-          tags ? (tagsHeight + (tagsHeight > sizeInMap ? 6 : 0)) : 0,
-          sizeInMap
-        ) + 'px';
+        ? sizeInMap + "px"
+        : Math.max(tags ? tagsHeight + (tagsHeight > sizeInMap ? 6 : 0) : 0, sizeInMap) + "px";
     },
 
     updateSearchQuery(searchQuery) {
@@ -198,27 +187,29 @@ export default {
 
     watchValue2ResetHeight() {
       const needWatch = [
-        'instance.forest.selectedNodeIds.length',
-        'instance.valueConsistsOf',
-        'instance.flat',
-        'instance.selectSize'
+        "instance.forest.selectedNodeIds.length",
+        "instance.valueConsistsOf",
+        "instance.flat",
+        "instance.selectSize",
       ];
-      const handler = () => { if (this.instance.multiple) this.$nextTick(() => {this.resetInputHeight();}); };
+      const handler = () => {
+        if (this.instance.multiple)
+          this.$nextTick(() => {
+            this.resetInputHeight();
+          });
+      };
 
       needWatch.map((watch) => {
         this.$watch(watch, handler);
       });
-    }
+    },
   },
 
   created() {
     const { instance } = this;
     this.currentPlaceholder = instance.placeholder;
 
-    this.debouncedCallback = debounce(
-      INPUT_DEBOUNCE_DELAY,
-      (val) => this.updateSearchQuery(val)
-    );
+    this.debouncedCallback = debounce(INPUT_DEBOUNCE_DELAY, (val) => this.updateSearchQuery(val));
 
     this.watchValue2ResetHeight();
   },
@@ -233,14 +224,14 @@ export default {
         const sizeMap = {
           medium: 36,
           small: 32,
-          mini: 28
+          mini: 28,
         };
 
         // init Width
         instance.inputWidth = reference.$el.getBoundingClientRect().width;
 
         // init Height
-        const inputElm = reference.$el.querySelector('input');
+        const inputElm = reference.$el.querySelector("input");
         this.initialInputHeight = inputElm.getBoundingClientRect().height || sizeMap[instance.selectSize];
         // if (instance.remote && instance.multiple) {
         //   this.resetInputHeight();
@@ -252,15 +243,15 @@ export default {
   render() {
     const { instance } = this;
     const classes = {
-      'is-focus': instance.trigger.isFocused
+      "is-focus": instance.trigger.isFocused,
     };
 
     return (
       <ElInput
         ref="input"
         type="text"
-        placeholder={ this.currentPlaceholder }
-        disabled={ instance.disabled }
+        placeholder={this.currentPlaceholder}
+        disabled={instance.disabled}
         nativeOnKeydown={this.onKeyDown}
         readonly={this.readonly}
         onInput={this.onInput}
@@ -268,13 +259,11 @@ export default {
         onBlur={this.onBlur}
         validate-event={false}
         size={instance.selectSize}
-        value={ this.selectedLabel }
+        value={this.selectedLabel}
         class={classes}>
-        <template slot="suffix">
-          { this.$slots.default }
-        </template>
+        <template slot="suffix">{this.$slots.default}</template>
       </ElInput>
     );
-  }
+  },
 };
 </script>

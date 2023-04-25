@@ -1,26 +1,26 @@
 <script>
-import ElCollapseTransition from 'element-ui/src/transitions/collapse-transition';
-import ElCheckbox from 'element-ui/packages/checkbox';
-import Emitter from 'element-ui/src/mixins/emitter';
-import { onLeftClick } from './utils';
-import {CHECKED, INDETERMINATE} from './constants';
+import ElCollapseTransition from "element-ui/src/transitions/collapse-transition";
+import ElCheckbox from "element-ui/packages/checkbox";
+import Emitter from "element-ui/src/mixins/emitter";
+import { onLeftClick } from "./utils";
+import { CHECKED, INDETERMINATE } from "./constants";
 
 let arrowPlaceholder;
 
 const Option = {
-  name: 'vue-treeselect--option',
+  name: "vue-treeselect--option",
 
   components: { ElCollapseTransition, ElCheckbox },
 
-  inject: ['instance'],
+  inject: ["instance"],
 
   mixins: [Emitter],
 
   props: {
     node: {
       type: Object,
-      required: true
-    }
+      required: true,
+    },
   },
 
   computed: {
@@ -34,7 +34,7 @@ const Option = {
       const { instance, node } = this;
 
       return instance.shouldShowOptionInMenu(node);
-    }
+    },
   },
 
   watch: {
@@ -42,37 +42,32 @@ const Option = {
       this.$nextTick(() => {
         setTimeout(() => {
           // wait menu re-render then re-calculate popper
-          this.dispatch('ElSelectDropdown', 'updatePopper');
+          this.dispatch("ElSelectDropdown", "updatePopper");
         }, 300);
       });
-    }
+    },
   },
 
   methods: {
     renderOption(listItemStyles) {
       const { instance, node } = this;
       const optionClass = {
-        'el-select-tree__option': true,
-        'el-select-tree__option--disabled': node.isDisabled,
-        'el-select-tree__option--selected': instance.isSelected(node),
-        'el-select-tree__option--highlight': node.isHighlighted,
-        'el-select-tree__option--matched':
-          instance.localSearch.active && node.isMatched,
-        'is-flat-result': instance.flattenSearchResults || !instance.hasBranchNodes,
-        'el-select-tree__option--hide': !this.shouldShow
+        "el-select-tree__option": true,
+        "el-select-tree__option--disabled": node.isDisabled,
+        "el-select-tree__option--selected": instance.isSelected(node),
+        "el-select-tree__option--highlight": node.isHighlighted,
+        "el-select-tree__option--matched": instance.localSearch.active && node.isMatched,
+        "is-flat-result": instance.flattenSearchResults || !instance.hasBranchNodes,
+        "el-select-tree__option--hide": !this.shouldShow,
       };
 
       return (
-        <div
-          class={optionClass}
-          style={listItemStyles}
-          onMouseenter={this.handleMouseEnterOption}
-          data-id={node.id}>
+        <div class={optionClass} style={listItemStyles} onMouseenter={this.handleMouseEnterOption} data-id={node.id}>
           {this.renderArrow()}
           {this.renderLabelContainer([
             this.renderCheckboxContainer([this.renderCheckbox()]),
             this.renderLoadingChildrenTip(),
-            this.renderLabel()
+            this.renderLabel(),
           ])}
         </div>
       );
@@ -97,15 +92,13 @@ const Option = {
 
       if (node.isBranch) {
         const arrowClass = {
-          'el-icon-caret-right': true,
-          'el-select-tree__icon-item': true,
-          'el-select-tree__option-arrow--rotated': this.shouldExpand
+          "el-icon-caret-right": true,
+          "el-select-tree__icon-item": true,
+          "el-select-tree__option-arrow--rotated": this.shouldExpand,
         };
 
         return (
-          <div
-            class="el-select-tree__option-arrow-container"
-            onMousedown={this.handleMouseDownOnArrow}>
+          <div class="el-select-tree__option-arrow-container" onMousedown={this.handleMouseDownOnArrow}>
             <i class={arrowClass} />
           </div>
         );
@@ -116,9 +109,7 @@ const Option = {
       // non-tree select).
       if (/* node.isLeaf && */ instance.hasBranchNodes) {
         if (!arrowPlaceholder) {
-          arrowPlaceholder = (
-            <div class="el-select-tree__option-arrow-placeholder">&nbsp;</div>
-          );
+          arrowPlaceholder = <div class="el-select-tree__option-arrow-placeholder">&nbsp;</div>;
         }
 
         return arrowPlaceholder;
@@ -129,9 +120,7 @@ const Option = {
 
     renderLabelContainer(children) {
       return (
-        <div
-          class="el-select-tree__label-container"
-          onMousedown={this.handleMouseDownOnLabelContainer}>
+        <div class="el-select-tree__label-container" onMousedown={this.handleMouseDownOnLabelContainer}>
           {children}
         </div>
       );
@@ -152,10 +141,10 @@ const Option = {
 
       return (
         <ElCheckbox
-          disabled={ node.isDisabled }
-          value={ checkedState === CHECKED }
-          indeterminate={ checkedState === INDETERMINATE }
-          nativeOnMousedown={ (evt) => evt.preventDefault() }
+          disabled={node.isDisabled}
+          value={checkedState === CHECKED}
+          indeterminate={checkedState === INDETERMINATE}
+          nativeOnMousedown={(evt) => evt.preventDefault()}
           nativeOnClick={(evt) => evt.preventDefault()}
         />
       );
@@ -164,10 +153,7 @@ const Option = {
     renderLabel() {
       const { instance, node } = this;
       const shouldShowCount =
-        node.isBranch &&
-        (instance.localSearch.active
-          ? instance.showCountOnSearchComputed
-          : instance.showCount);
+        node.isBranch && (instance.localSearch.active ? instance.showCountOnSearchComputed : instance.showCount);
 
       const count = shouldShowCount
         ? instance.localSearch.active
@@ -175,9 +161,9 @@ const Option = {
           : node.count[instance.showCountOf]
         : NaN;
 
-      const labelClassName = 'el-select-tree__label';
-      const countClassName = 'el-select-tree__count';
-      const customLabelRenderer = instance.$scopedSlots['option-label'];
+      const labelClassName = "el-select-tree__label";
+      const countClassName = "el-select-tree__count";
+      const customLabelRenderer = instance.$scopedSlots["option-label"];
 
       if (customLabelRenderer) {
         return customLabelRenderer({
@@ -185,7 +171,7 @@ const Option = {
           shouldShowCount,
           count,
           labelClassName,
-          countClassName
+          countClassName,
         });
       }
 
@@ -202,9 +188,7 @@ const Option = {
 
       if (!node.childrenStates.isLoaded) return null;
 
-      return node.children.map((childNode) => (
-        <Option node={childNode} key={childNode.id} />
-      ));
+      return node.children.map((childNode) => <Option node={childNode} key={childNode.id} />);
     },
 
     renderNoChildrenTip() {
@@ -213,15 +197,11 @@ const Option = {
       if (!node.childrenStates.isLoaded || node.children.length) return null;
 
       const listItemStyles = {
-        paddingLeft: instance.optionsTipPaddingLeft(node)
+        paddingLeft: instance.optionsTipPaddingLeft(node),
       };
 
       return (
-        <span
-          type="no-children"
-          icon="warning"
-          style={listItemStyles}
-          class="el-select-tree__tip-text is-left">
+        <span type="no-children" icon="warning" style={listItemStyles} class="el-select-tree__tip-text is-left">
           {instance.noChildrenText}
         </span>
       );
@@ -232,9 +212,7 @@ const Option = {
 
       if (!node.childrenStates || !node.childrenStates.isLoading) return null;
 
-      return (
-        <span class="el-select-tree__loading-icon el-icon-loading" />
-      );
+      return <span class="el-select-tree__loading-icon el-icon-loading" />;
     },
 
     renderLoadingChildrenErrorTip() {
@@ -242,20 +220,13 @@ const Option = {
 
       if (!node.childrenStates.loadingError) return null;
       const listItemStyles = {
-        paddingLeft: instance.optionsTipPaddingLeft(node)
+        paddingLeft: instance.optionsTipPaddingLeft(node),
       };
 
       return (
-        <span
-          type="error"
-          icon="error"
-          style={listItemStyles}
-          class="el-select-tree__tip-text is-left">
+        <span type="error" icon="error" style={listItemStyles} class="el-select-tree__tip-text is-left">
           {node.childrenStates.loadingError}
-          <a
-            class="el-select-tree__retry"
-            title={instance.retryTitle}
-            onMousedown={this.handleMouseDownOnRetry}>
+          <a class="el-select-tree__retry" title={instance.retryTitle} onMousedown={this.handleMouseDownOnRetry}>
             {instance.retryText}
           </a>
         </span>
@@ -270,54 +241,47 @@ const Option = {
       instance.setCurrentHighlightedOption(node, false);
     },
 
-    handleMouseDownOnArrow: onLeftClick(
-      function handleMouseDownOnOptionArrow() {
-        const { instance, node } = this;
+    handleMouseDownOnArrow: onLeftClick(function handleMouseDownOnOptionArrow() {
+      const { instance, node } = this;
 
+      instance.toggleExpanded(node);
+    }),
+
+    handleMouseDownOnLabelContainer: onLeftClick(function handleMouseDownOnLabelContainer() {
+      const { instance, node } = this;
+
+      if (node.isBranch && instance.disableBranchNodes) {
         instance.toggleExpanded(node);
-      }),
-
-    handleMouseDownOnLabelContainer: onLeftClick(
-      function handleMouseDownOnLabelContainer() {
-        const { instance, node } = this;
-
-        if (node.isBranch && instance.disableBranchNodes) {
-          instance.toggleExpanded(node);
-        } else {
-          instance.select(node);
-        }
+      } else {
+        instance.select(node);
       }
-    ),
+    }),
 
     handleMouseDownOnRetry: onLeftClick(function handleMouseDownOnRetry() {
       const { instance, node } = this;
 
       instance.loadChildrenOptions(node);
-    })
+    }),
   },
 
   render() {
     const { node, instance } = this;
     const indentLevel = this.instance.shouldFlattenOptions ? 0 : node.level;
     const listItemClass = {
-      'el-select-tree__list-item': true,
-      [`el-select-tree__indent-level-${indentLevel}`]: true
+      "el-select-tree__list-item": true,
+      [`el-select-tree__indent-level-${indentLevel}`]: true,
     };
     const listItemStyles = {
-      paddingLeft: instance.optionsPaddingLeft(node)
+      paddingLeft: instance.optionsPaddingLeft(node),
     };
 
     return (
       <div class={listItemClass}>
         {this.renderOption(listItemStyles)}
-        {node.isBranch && (
-          <ElCollapseTransition>
-            {this.renderSubOptionsList()}
-          </ElCollapseTransition>
-        )}
+        {node.isBranch && <ElCollapseTransition>{this.renderSubOptionsList()}</ElCollapseTransition>}
       </div>
     );
-  }
+  },
 };
 
 export default Option;

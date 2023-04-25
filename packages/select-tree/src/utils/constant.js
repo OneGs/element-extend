@@ -1,1 +1,1 @@
-export { default as constant } from 'lodash/constant';
+export { default as constant } from "lodash/constant";

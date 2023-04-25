@@ -1,1 +1,1 @@
-export { default as isPromise } from 'is-promise';
+export { default as isPromise } from "is-promise";

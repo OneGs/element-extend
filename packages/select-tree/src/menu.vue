@@ -1,23 +1,23 @@
 <script>
-import ElSelectMenu from './select-dropdown.vue';
-import ElScrollbar from 'element-ui/packages/scrollbar';
-import Option from './option';
+import ElSelectMenu from "./select-dropdown.vue";
+import ElScrollbar from "element-ui/packages/scrollbar";
+import Option from "./option";
 
 export default {
-  name: 'vue-treeselect--menu',
+  name: "vue-treeselect--menu",
 
-  inject: ['instance'],
+  inject: ["instance"],
 
-  components: {ElSelectMenu, ElScrollbar, Option},
+  components: { ElSelectMenu, ElScrollbar, Option },
 
   watch: {
-    'instance.menu.isOpen'(newValue) {
+    "instance.menu.isOpen"(newValue) {
       if (newValue) {
         this.$nextTick(this.onMenuOpen);
       } else {
         this.onMenuClose();
       }
-    }
+    },
   },
 
   mounted() {
@@ -31,26 +31,18 @@ export default {
       const { instance } = this;
 
       return (
-        <el-select-menu
-          ref="popper"
-          v-show={instance.menu.isOpen}
-          appendToBody={instance.appendToBody}
-        >
+        <el-select-menu ref="popper" v-show={instance.menu.isOpen} appendToBody={instance.appendToBody}>
           <el-scrollbar
             tag="ul"
             wrap-class="el-select-dropdown__wrap"
             view-class="el-select-dropdown__list"
             ref="scrollbar">
-            <div
-              ref="menu"
-              class="el-select-tree__inner-menu"
-              onMousedown={instance.handleMouseDown}
-            >
+            <div ref="menu" class="el-select-tree__inner-menu" onMousedown={instance.handleMouseDown}>
               {instance.async
                 ? this.renderAsyncSearchMenuInner()
                 : instance.localSearch.active
-                  ? this.renderLocalSearchMenuInner()
-                  : this.renderNormalMenuInner()}
+                ? this.renderLocalSearchMenuInner()
+                : this.renderNormalMenuInner()}
             </div>
           </el-scrollbar>
         </el-select-menu>
@@ -60,12 +52,9 @@ export default {
     renderAsyncSearchMenuInner() {
       const { instance } = this;
       const entry = instance.getRemoteSearchEntry();
-      const shouldShowSearchPromptTip =
-          instance.trigger.searchQuery === '' && !instance.defaultOptions;
+      const shouldShowSearchPromptTip = instance.trigger.searchQuery === "" && !instance.defaultOptions;
 
-      const shouldShowNoResultsTip = shouldShowSearchPromptTip
-        ? false
-        : entry.isLoaded && entry.options.length === 0;
+      const shouldShowNoResultsTip = shouldShowSearchPromptTip ? false : entry.isLoaded && entry.options.length === 0;
 
       if (shouldShowSearchPromptTip) {
         return this.renderSearchPromptTip();
@@ -87,10 +76,7 @@ export default {
         return this.renderLoadingOptionsTip();
       } else if (instance.rootOptionsStates.loadingError) {
         return this.renderLoadingRootOptionsErrorTip();
-      } else if (
-        instance.rootOptionsStates.isLoaded &&
-          instance.forest.normalizedOptions.length === 0
-      ) {
+      } else if (instance.rootOptionsStates.isLoaded && instance.forest.normalizedOptions.length === 0) {
         return this.renderNoAvailableOptionsTip();
       } else if (instance.localSearch.noResults) {
         return this.renderNoResultsTip();
@@ -106,10 +92,7 @@ export default {
         return this.renderLoadingOptionsTip();
       } else if (instance.rootOptionsStates.loadingError) {
         return this.renderLoadingRootOptionsErrorTip();
-      } else if (
-        instance.rootOptionsStates.isLoaded &&
-        instance.forest.normalizedOptions.length === 0
-      ) {
+      } else if (instance.rootOptionsStates.isLoaded && instance.forest.normalizedOptions.length === 0) {
         return this.renderNoAvailableOptionsTip();
       } else {
         return this.renderOptionList();
@@ -131,71 +114,47 @@ export default {
     renderNoResultsTip() {
       const { instance } = this;
 
-      return (
-        <span class="el-select-tree__tip-text">
-          {instance.noResultsText}
-        </span>
-      );
+      return <span class="el-select-tree__tip-text">{instance.noResultsText}</span>;
     },
 
     renderSearchPromptTip() {
       const { instance } = this;
 
-      return (
-        <span class="el-select-tree__tip-text">
-          {instance.searchPromptText}
-        </span>
-      );
+      return <span class="el-select-tree__tip-text">{instance.searchPromptText}</span>;
     },
 
     renderAsyncSearchLoadingErrorTip() {
       const { instance } = this;
-      return (
-        <span class="el-select-tree__tip-text">
-          {instance.retryText}
-        </span>
-      );
+      return <span class="el-select-tree__tip-text">{instance.retryText}</span>;
     },
 
     renderLoadingOptionsTip() {
       const { instance } = this;
-      return (
-        <span class="el-select-tree__tip-text">
-          {instance.loadingText}
-        </span>
-      );
+      return <span class="el-select-tree__tip-text">{instance.loadingText}</span>;
     },
 
     renderLoadingRootOptionsErrorTip() {
       const { instance } = this;
 
-      return (
-        <span class="el-select-tree__tip-text is-left">
-          {instance.errorText}
-        </span>
-      );
+      return <span class="el-select-tree__tip-text is-left">{instance.errorText}</span>;
     },
 
     renderNoAvailableOptionsTip() {
       const { instance } = this;
 
-      return (
-        <span class="el-select-tree__tip-text">
-          { instance.noOptionsText }
-        </span>
-      );
+      return <span class="el-select-tree__tip-text">{instance.noOptionsText}</span>;
     },
 
     onMenuOpen() {
       const { instance } = this;
 
-      instance.broadcast('ElSelectDropdown', 'updatePopper');
+      instance.broadcast("ElSelectDropdown", "updatePopper");
     },
 
     onMenuClose() {
       const { instance } = this;
 
-      instance.broadcast('ElSelectDropdown', 'destroyPopper');
+      instance.broadcast("ElSelectDropdown", "destroyPopper");
     },
 
     handleMousedownEnterOption() {
@@ -205,10 +164,7 @@ export default {
     },
 
     watch2UpdateMenuPopper() {
-      const needWatch = [
-        'instance.forest.selectedNodeIds.length',
-        'instance.selectSize'
-      ];
+      const needWatch = ["instance.forest.selectedNodeIds.length", "instance.selectSize"];
       const handler = () => {
         if (this.instance.multiple) {
           this.$nextTick(() => {
@@ -224,7 +180,7 @@ export default {
 
     doDestroy() {
       this.$refs.popper && this.$refs.popper.doDestroy();
-    }
+    },
   },
 
   created() {
@@ -233,20 +189,13 @@ export default {
 
   render() {
     return (
-      <div
-        ref="menu-container"
-        class="el-select-tree__menu"
-        onMousedown={this.handleMousedownEnterOption}
-      >
-        <transition
-          name="el-zoom-in-top"
-          on-after-leave={this.doDestroy}
-        >
+      <div ref="menu-container" class="el-select-tree__menu" onMousedown={this.handleMousedownEnterOption}>
+        <transition name="el-zoom-in-top" on-after-leave={this.doDestroy}>
           {this.renderMenu()}
         </transition>
       </div>
     );
-  }
+  },
 };
 </script>
 

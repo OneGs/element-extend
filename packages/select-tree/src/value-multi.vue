@@ -1,8 +1,8 @@
 <script>
-import Input from './input.vue';
-import ElTag from 'element-ui/packages/tag';
-import {debounce, includes} from './utils';
-import {INPUT_DEBOUNCE_DELAY, KEY_CODES} from './constants';
+import Input from "./input.vue";
+import ElTag from "element-ui/packages/tag";
+import { debounce, includes } from "./utils";
+import { INPUT_DEBOUNCE_DELAY, KEY_CODES } from "./constants";
 
 const keysThatRequireMenuBeingOpen = [
   KEY_CODES.ENTER,
@@ -11,29 +11,25 @@ const keysThatRequireMenuBeingOpen = [
   KEY_CODES.ARROW_LEFT,
   KEY_CODES.ARROW_UP,
   KEY_CODES.ARROW_RIGHT,
-  KEY_CODES.ARROW_DOWN
+  KEY_CODES.ARROW_DOWN,
 ];
 
 export default {
-  name: 'vue-treeselect--multi-value',
+  name: "vue-treeselect--multi-value",
 
-  components: { ElTag, Input},
+  components: { ElTag, Input },
 
-  inject: ['instance'],
+  inject: ["instance"],
 
   computed: {
     collapseTagSize() {
-      return ['small', 'mini'].indexOf(this.instance.size) > -1
-        ? 'mini'
-        : 'small';
+      return ["small", "mini"].indexOf(this.instance.size) > -1 ? "mini" : "small";
     },
 
     selectedLimitNodes() {
       const { instance } = this;
 
-      return instance.internalValue
-        .slice(0, instance.limit)
-        .map(instance.getNode);
+      return instance.internalValue.slice(0, instance.limit).map(instance.getNode);
     },
 
     showTag() {
@@ -46,42 +42,42 @@ export default {
       const { instance } = this;
 
       return !instance.searchable || !instance.menu.isOpen;
-    }
+    },
   },
 
   data() {
     return {
       selectedLabel: null,
-      inputLength: 20
+      inputLength: 20,
     };
   },
 
   watch: {
     // 根据是否有值
-    'showTag': {
+    showTag: {
       handler() {
         this.setInputValue();
-      }
+      },
     },
 
     // 有值，不显示placeholder
-    'selectedLabel': {
+    selectedLabel: {
       handler() {
         this.setInputValue();
-      }
+      },
     },
 
     /**
      * Title for the "×" button when `multiple: true`.
      */
-    'instance.trigger.searchQuery': {
+    "instance.trigger.searchQuery": {
       handler(searchQuery) {
         if (searchQuery) return;
 
         const { instance } = this;
         instance.clearAllText && (this.selectedLabel = null);
-      }
-    }
+      },
+    },
   },
 
   methods: {
@@ -92,8 +88,7 @@ export default {
         <div
           ref="tags"
           class="el-select-tree__tags"
-          style={{ 'max-width': instance.inputWidth - 32 + 'px', width: '100%' }}
-        >
+          style={{ "max-width": instance.inputWidth - 32 + "px", width: "100%" }}>
           {this.renderMultiTags()}
           {this.renderExceedLimitTip()}
           {this.renderSearchInput()}
@@ -104,34 +99,30 @@ export default {
     renderMultiTags() {
       const { instance } = this;
       const renderLabel = (node) => {
-        const customValueLabelRenderer = instance.$scopedSlots['value-label'];
-        return customValueLabelRenderer
-          ? customValueLabelRenderer({ node })
-          : node.label;
+        const customValueLabelRenderer = instance.$scopedSlots["value-label"];
+        return customValueLabelRenderer ? customValueLabelRenderer({ node }) : node.label;
       };
 
-      return (
-        this.selectedLimitNodes.map(node =>
-          <el-tag
-            key={node.id}
-            size={this.collapseTagSize}
-            type="info"
-            closable
-            disable-transitions
-            onClick={() => this.deleteNode(node)}
-            onClose={() => this.deleteNode(node)}>
-            <span>{ renderLabel(node) }</span>
-          </el-tag>
-        )
-      );
+      return this.selectedLimitNodes.map((node) => (
+        <el-tag
+          key={node.id}
+          size={this.collapseTagSize}
+          type="info"
+          closable
+          disable-transitions
+          onClick={() => this.deleteNode(node)}
+          onClose={() => this.deleteNode(node)}>
+          <span>{renderLabel(node)}</span>
+        </el-tag>
+      ));
     },
 
     renderSearchInput() {
       const { instance } = this;
       const styles = {
-        'flex-grow': '1',
-        width: this.inputLength / (instance.inputWidth - 32) + '%',
-        'max-width': instance.inputWidth - 42 + 'px'
+        "flex-grow": "1",
+        width: this.inputLength / (instance.inputWidth - 32) + "%",
+        "max-width": instance.inputWidth - 42 + "px",
       };
 
       return (
@@ -141,7 +132,7 @@ export default {
           class="el-select__input"
           style={styles}
           value={this.selectedLabel}
-          disabled={ instance.disabled }
+          disabled={instance.disabled}
           readonly={this.readonly}
           onKeydown={this.onKeyDown}
           onInput={this.onInput}
@@ -158,12 +149,7 @@ export default {
       if (count <= 0) return null;
 
       return (
-        <el-tag
-          closable={false}
-          type="info"
-          key="EXCEED"
-          size={this.collapseTagSize}
-          disable-transitions>
+        <el-tag closable={false} type="info" key="EXCEED" size={this.collapseTagSize} disable-transitions>
           <span>+{count}</span>
         </el-tag>
       );
@@ -207,15 +193,11 @@ export default {
       const { instance } = this;
       // https://css-tricks.com/snippets/javascript/javascript-keycodes/
       // https://stackoverflow.com/questions/4471582/javascript-keycode-vs-which
-      const key =
-          'which' in evt ? evt.which : /* istanbul ignore next */ evt.keyCode;
+      const key = "which" in evt ? evt.which : /* istanbul ignore next */ evt.keyCode;
 
       if (evt.ctrlKey || evt.shiftKey || evt.altKey || evt.metaKey) return;
 
-      if (
-        !instance.menu.isOpen &&
-          includes(keysThatRequireMenuBeingOpen, key)
-      ) {
+      if (!instance.menu.isOpen && includes(keysThatRequireMenuBeingOpen, key)) {
         evt.preventDefault();
         return instance.openMenu();
       }
@@ -256,11 +238,7 @@ export default {
           if (current.isBranch && instance.shouldExpand(current)) {
             evt.preventDefault();
             instance.toggleExpanded(current);
-          } else if (
-            !current.isRootNode &&
-              (current.isLeaf ||
-                  (current.isBranch && !instance.shouldExpand(current)))
-          ) {
+          } else if (!current.isRootNode && (current.isLeaf || (current.isBranch && !instance.shouldExpand(current)))) {
             evt.preventDefault();
             instance.setCurrentHighlightedOption(current.parentNode);
           }
@@ -307,14 +285,11 @@ export default {
       const input = this.getInput();
 
       input.setValueAndPlaceholder(null, this.showTag || this.selectedLabel ? null : instance.placeholder, true);
-    }
+    },
   },
 
   created() {
-    this.debouncedCallback = debounce(
-      INPUT_DEBOUNCE_DELAY,
-      (val) => this.updateSearchQuery(val)
-    );
+    this.debouncedCallback = debounce(INPUT_DEBOUNCE_DELAY, (val) => this.updateSearchQuery(val));
   },
 
   mounted() {
@@ -330,12 +305,10 @@ export default {
 
     return (
       <div class="el-select-tree__value-multi">
-        { this.renderTags() }
-        <Input ref="input">
-          { this.$slots.default }
-        </Input>
+        {this.renderTags()}
+        <Input ref="input">{this.$slots.default}</Input>
       </div>
     );
-  }
+  },
 };
 </script>

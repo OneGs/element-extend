@@ -1,5 +1,5 @@
-import watchSizeForBrowsersOtherThanIE9 from 'watch-size';
-import { removeFromArray } from './removeFromArray';
+import watchSizeForBrowsersOtherThanIE9 from "watch-size";
+import { removeFromArray } from "./removeFromArray";
 
 let intervalId;
 const registered = [];
@@ -34,7 +34,7 @@ function watchSizeForIE9($el, listener) {
     $el,
     listener,
     lastWidth: null,
-    lastHeight: null
+    lastHeight: null,
   };
 
   const unwatch = () => {
@@ -58,9 +58,7 @@ export function watchSize($el, listener) {
   // Disable this behavior with a lock to achieve a clearer code logic.
   let locked = true;
   const wrappedListener = (...args) => locked || listener(...args);
-  const implementation = isIE9
-    ? watchSizeForIE9
-    : watchSizeForBrowsersOtherThanIE9;
+  const implementation = isIE9 ? watchSizeForIE9 : watchSizeForBrowsersOtherThanIE9;
 
   const removeSizeWatcher = implementation($el, wrappedListener);
   locked = false; // unlock after initialization

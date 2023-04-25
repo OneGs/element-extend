@@ -1,1 +1,1 @@
-export { default as noop } from 'lodash/noop';
+export { default as noop } from "lodash/noop";
