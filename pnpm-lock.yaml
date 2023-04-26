@@ -52,15 +52,18 @@ importers:
       element-ui:
         specifier: ^2.15.13
         version: 2.15.13(vue@2.7.14)
+      et-select-tree:
+        specifier: workspace:^
+        version: link:../select-tree
+      et-virtual-scroller:
+        specifier: workspace:^
+        version: link:../virtual-scroller
       sass:
         specifier: ^1.62.0
         version: 1.62.0
       sass-loader:
         specifier: ^13.2.2
         version: 13.2.2(sass@1.62.0)(webpack@5.77.0)
-      select-tree:
-        specifier: workspace:^
-        version: link:../select-tree
       vue:
         specifier: ^2.6.14
         version: 2.7.14
@@ -116,6 +119,9 @@ importers:
       element-ui:
         specifier: ^2.15.13
         version: 2.15.13(vue@2.7.14)
+      et-virtual-scroller:
+        specifier: workspace:^
+        version: link:../virtual-scroller
       fuzzysearch:
         specifier: ^1.0.3
         version: 1.0.3
@@ -131,6 +137,24 @@ importers:
       watch-size:
         specifier: ^2.0.0
         version: 2.0.0
+
+  packages/virtual-scroller:
+    dependencies:
+      element-ui:
+        specifier: ^2.15.13
+        version: 2.15.13(vue@2.7.14)
+      scrollparent:
+        specifier: ^2.0.1
+        version: 2.0.1
+      vue:
+        specifier: ^2.6.11
+        version: 2.7.14
+      vue-observe-visibility:
+        specifier: ^0.4.4
+        version: 0.4.4
+      vue-resize:
+        specifier: ^0.4.5
+        version: 0.4.5(vue@2.7.14)
 
 packages:
 
@@ -5932,6 +5956,10 @@ packages:
       ajv-keywords: 5.1.0(ajv@8.12.0)
     dev: true
 
+  /scrollparent@2.0.1:
+    resolution: {integrity: sha512-HSdN78VMvFCSGCkh0oYX/tY4R3P1DW61f8+TeZZ4j2VLgfwvw0bpRSOv4PCVKisktIwbzHCfZsx+rLbbDBqIBA==}
+    dev: false
+
   /select-hose@2.0.0:
     resolution: {integrity: sha512-mEugaLK+YfkijB4fx0e6kImuJdCIt2LxCRcbEYPqRGCs4F2ogyfZU5IAZRdjCP8JPq2AtdNoC/Dux63d9Kiryg==}
     dev: true
@@ -6657,6 +6685,18 @@ packages:
       vue: 2.7.14
       webpack: 5.77.0
     dev: true
+
+  /vue-observe-visibility@0.4.4:
+    resolution: {integrity: sha512-2eDYHgL2MJ2wkkNZnus56D0CG8m80BFLuvEcGnD7rQ9jxFogpXMsM9aM5Md+XT8AmYGYCqVfOVBaWFtVvwbpmw==}
+    dev: false
+
+  /vue-resize@0.4.5(vue@2.7.14):
+    resolution: {integrity: sha512-bhP7MlgJQ8TIkZJXAfDf78uJO+mEI3CaLABLjv0WNzr4CcGRGPIAItyWYnP6LsPA4Oq0WE+suidNs6dgpO4RHg==}
+    peerDependencies:
+      vue: ^2.3.0
+    dependencies:
+      vue: 2.7.14
+    dev: false
 
   /vue-router@3.6.5(vue@2.7.14):
     resolution: {integrity: sha512-VYXZQLtjuvKxxcshuRAwjHnciqZVoXAjTjcqBTz4rKc8qih9g9pI3hbDjmqXaHdgL3v8pV6P8Z335XvHzESxLQ==}

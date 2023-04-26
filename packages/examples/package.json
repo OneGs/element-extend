@@ -10,9 +10,10 @@
   "dependencies": {
     "core-js": "^3.8.3",
     "element-ui": "^2.15.13",
+    "et-select-tree": "workspace:^",
+    "et-virtual-scroller": "workspace:^",
     "sass": "^1.62.0",
     "sass-loader": "^13.2.2",
-    "select-tree": "workspace:^",
     "vue": "^2.6.14",
     "vue-router": "^3.5.1",
     "vuex": "^3.6.2"

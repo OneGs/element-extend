@@ -349,6 +349,12 @@ export default {
       type: [String, Number],
     },
 
+    /** Will render virtual select when has large data  */
+    large: {
+      type: Boolean,
+      default: false,
+    },
+
     /**
      * Set tags Size
      */
@@ -818,6 +824,14 @@ export default {
     /** input size */
     selectSize() {
       return this.size || this._elFormItemSize || (this.$ELEMENT || {}).size;
+    },
+    /** large items that filter no hide value */
+    largeItems() {
+      const items = [];
+      this.traverseAllNodesDFS((node) => {
+        console.log(node);
+      });
+      return items;
     },
     /* eslint-enable valid-jsdoc */
   },
@@ -1361,10 +1375,7 @@ export default {
     },
 
     shouldShowOptionInMenu(node) {
-      if (this.localSearch.active && !this.shouldOptionBeIncludedInSearchResult(node)) {
-        return false;
-      }
-      return true;
+      return !(this.localSearch.active && !this.shouldOptionBeIncludedInSearchResult(node));
     },
 
     getControl() {
@@ -1373,7 +1384,9 @@ export default {
 
     getScrollWrapper() {
       const ref = this;
-      const $menu = ref.$refs.menu.$refs.scrollbar.$el.querySelector(".el-scrollbar__wrap");
+      const $menu = !this.large
+        ? ref.$refs.menu.$refs.scrollbar.$el.querySelector(".el-scrollbar__wrap")
+        : ref.$refs.menu.$refs.scrollbar && ref.$refs.menu.$refs.scrollbar.getScrollWrapper();
       return $menu && $menu.nodeName !== "#comment" ? $menu : null;
     },
 
@@ -1473,8 +1486,8 @@ export default {
     openMenu() {
       if (this.disabled || this.menu.isOpen) return;
       this.menu.isOpen = true;
-      this.$nextTick(this.resetHighlightedOptionWhenNecessary);
-      this.$nextTick(this.restoreMenuScrollPosition);
+      this.$nextTick().then(this.resetHighlightedOptionWhenNecessary);
+      this.$nextTick().then(this.restoreMenuScrollPosition);
       this.$nextTick().then(this.highlightSelectedOptions);
       if (!this.options && !this.async) this.loadRootOptions();
       this.$emit("open", this.getInstanceId());
@@ -1967,6 +1980,7 @@ export default {
 
     restoreMenuScrollPosition() {
       const $menu = this.getScrollWrapper();
+
       // istanbul ignore else
       if ($menu) $menu.scrollTop = this.menu.lastScrollPosition;
     },
