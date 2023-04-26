@@ -1,4 +1,5 @@
 <script>
+import { RecycleScroller } from "et-virtual-scroller";
 import ElSelectMenu from "./select-dropdown.vue";
 import ElScrollbar from "element-ui/packages/scrollbar";
 import Option from "./option";
@@ -8,7 +9,7 @@ export default {
 
   inject: ["instance"],
 
-  components: { ElSelectMenu, ElScrollbar, Option },
+  components: { ElSelectMenu, ElScrollbar, Option, RecycleScroller },
 
   watch: {
     "instance.menu.isOpen"(newValue) {
@@ -30,14 +31,14 @@ export default {
     renderMenu() {
       const { instance } = this;
 
-      return (
-        <el-select-menu ref="popper" v-show={instance.menu.isOpen} appendToBody={instance.appendToBody}>
+      const renderNormalMenu = () => {
+        return (
           <el-scrollbar
             tag="ul"
             wrap-class="el-select-dropdown__wrap"
             view-class="el-select-dropdown__list"
             ref="scrollbar">
-            <div ref="menu" class="el-select-tree__inner-menu" onMousedown={instance.handleMouseDown}>
+            <div class="el-select-tree__inner-menu" onMouseDown={instance.handleMouseDown}>
               {instance.async
                 ? this.renderAsyncSearchMenuInner()
                 : instance.localSearch.active
@@ -45,6 +46,22 @@ export default {
                 : this.renderNormalMenuInner()}
             </div>
           </el-scrollbar>
+        );
+      };
+
+      const renderLargeMenu = () => {
+        return instance.localSearch.active ? (
+          <div class="el-select-dropdown__wrap el-select-tree__inner-menu" onMouseDown={instance.handleMouseDown}>
+            {this.renderLocalSearchMenuInner()}
+          </div>
+        ) : (
+          this.renderNormalMenuInner()
+        );
+      };
+
+      return (
+        <el-select-menu ref="popper" v-show={instance.menu.isOpen} appendToBody={instance.appendToBody}>
+          {instance.large ? renderLargeMenu() : renderNormalMenu()}
         </el-select-menu>
       );
     },
@@ -80,6 +97,8 @@ export default {
         return this.renderNoAvailableOptionsTip();
       } else if (instance.localSearch.noResults) {
         return this.renderNoResultsTip();
+      } else if (instance.large) {
+        return this.renderLargeOptionList();
       } else {
         return this.renderOptionList();
       }
@@ -94,6 +113,8 @@ export default {
         return this.renderLoadingRootOptionsErrorTip();
       } else if (instance.rootOptionsStates.isLoaded && instance.forest.normalizedOptions.length === 0) {
         return this.renderNoAvailableOptionsTip();
+      } else if (instance.large) {
+        return this.renderLargeOptionList();
       } else {
         return this.renderOptionList();
       }
@@ -108,6 +129,26 @@ export default {
             <Option node={rootNode} key={rootNode.id} />
           ))}
         </div>
+      );
+    },
+
+    renderLargeOptionList() {
+      const { instance } = this;
+      const scopedSlots = {
+        default: ({ item: rootNode }) => {
+          return <Option node={rootNode} key={rootNode.id} />;
+        },
+      };
+
+      return (
+        <RecycleScroller
+          ref="scrollbar"
+          style="height: 100%"
+          item-size={34}
+          key-field="id"
+          items={instance.forest.normalizedOptions}
+          scopedSlots={scopedSlots}
+        />
       );
     },
 
@@ -198,9 +239,3 @@ export default {
   },
 };
 </script>
-
-<!--
-渲染整个tree，对tree做整体调度
-1. 各式各样的tree功能，包括过滤、选择模式等等
-2. 监听isOpen：通知dropDown动态计算位置并显示
--->

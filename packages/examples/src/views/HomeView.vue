@@ -3,7 +3,12 @@
     <div style="width: 300px">
       <el-form>
         <el-form-item label="水果">
-          <el-select-tree v-model="valued" :options="options" />
+          <el-select-tree v-model="valued" :options="options" :defaultExpandLevel="3" />
+        </el-form-item>
+
+        <el-form-item label="用户">
+          <el-button @click="show = !show">展示</el-button>
+          <el-select-tree v-show="show" v-model="valuedLocal" :options="list" large />
         </el-form-item>
       </el-form>
     </div>
@@ -109,12 +114,39 @@ export default {
   data() {
     return {
       valued: null,
+      valuedLocal: null,
       options: [],
+      list: [],
+      show: true,
     };
   },
 
   created() {
     this.options = OPTIONS;
+
+    this.list = Array(100)
+      .fill(1)
+      .map((_, index) => {
+        return {
+          disabled: index % 2 === 0,
+          id: index * 10 + "",
+          label: index * 10 + "",
+          children: Array.from({ length: 10 })
+            .fill(1)
+            .map((v, i) => {
+              return {
+                id: index + "A" + i,
+                label: index + "A" + i,
+              };
+            }),
+        };
+      });
   },
 };
 </script>
+
+<style scoped>
+.scroller {
+  height: 300px;
+}
+</style>
