@@ -1,6 +1,6 @@
 <script>
 import ElSelectMenu from "./select-dropdown.vue";
-import ElScrollbar from "element-ui/packages/scrollbar";
+import ElScrollbar from "element-ui/lib/scrollbar";
 import Option from "./option";
 
 export default {

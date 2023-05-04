@@ -1,5 +1,5 @@
 <script>
-import ElInput from "element-ui/packages/input";
+import ElInput from "element-ui/lib/input";
 import { debounce, includes } from "./utils";
 import { INPUT_DEBOUNCE_DELAY, KEY_CODES } from "./constants";
 

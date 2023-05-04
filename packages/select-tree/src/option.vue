@@ -1,7 +1,7 @@
 <script>
-import ElCollapseTransition from "element-ui/src/transitions/collapse-transition";
-import ElCheckbox from "element-ui/packages/checkbox";
-import Emitter from "element-ui/src/mixins/emitter";
+import ElCollapseTransition from "element-ui/lib/transitions/collapse-transition";
+import ElCheckbox from "element-ui/lib/checkbox";
+import Emitter from "element-ui/lib/mixins/emitter";
 import { onLeftClick } from "./utils";
 import { CHECKED, INDETERMINATE } from "./constants";
 

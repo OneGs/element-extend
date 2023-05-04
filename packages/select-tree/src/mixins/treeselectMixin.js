@@ -38,7 +38,7 @@ import {
   INDEX,
 } from "../constants";
 
-import Emitter from "element-ui/src/mixins/emitter";
+import Emitter from "element-ui/lib/mixins/emitter";
 
 function sortValueByIndex(a, b) {
   let i = 0;

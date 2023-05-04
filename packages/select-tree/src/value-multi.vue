@@ -1,6 +1,6 @@
 <script>
 import Input from "./input.vue";
-import ElTag from "element-ui/packages/tag";
+import ElTag from "element-ui/lib/tag";
 import { debounce, includes } from "./utils";
 import { INPUT_DEBOUNCE_DELAY, KEY_CODES } from "./constants";
 

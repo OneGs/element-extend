@@ -1,5 +1,5 @@
 <script>
-import Clickoutside from "element-ui/src/utils/clickoutside";
+import Clickoutside from "element-ui/lib/utils/clickoutside";
 import treeselectMixin from "./mixins/treeselectMixin";
 import Control from "./control.vue";
 import Menu from "./menu";
