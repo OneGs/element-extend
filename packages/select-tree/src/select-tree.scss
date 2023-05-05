@@ -15,6 +15,11 @@
 
   /* input */
 
+  .el-tag span {
+    width: 100%;
+    overflow: hidden;
+  }
+
   .el-input__inner {
     cursor: pointer;
 

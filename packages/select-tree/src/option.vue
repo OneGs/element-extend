@@ -176,7 +176,7 @@ const Option = {
       }
 
       return (
-        <label class={labelClassName}>
+        <label class={labelClassName} title={node.label}>
           {node.label}
           {shouldShowCount && <span class={countClassName}>({count})</span>}
         </label>

@@ -59,7 +59,7 @@ export default {
   watch: {
     "$parent.inputWidth"() {
       this.minWidth = this.getInputComponent().$el.getBoundingClientRect().width + "px";
-      this.maxWidth = this.getInputComponent().$el.getBoundingClientRect().width + "px";
+      // this.maxWidth = this.getInputComponent().$el.getBoundingClientRect().width + "px";
     },
 
     "instance.multiple": {
@@ -88,7 +88,7 @@ export default {
     this.$on("updatePopper", () => {
       this.referenceElm = this.getInputComponent().$el;
       this.minWidth = this.referenceElm.getBoundingClientRect().width + "px";
-      this.maxWidth = this.referenceElm.getBoundingClientRect().width + "px";
+      // this.maxWidth = this.referenceElm.getBoundingClientRect().width + "px";
       instance.menu.isOpen && this.updatePopper();
     });
 

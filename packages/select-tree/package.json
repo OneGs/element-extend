@@ -1,6 +1,6 @@
 {
-  "name": "select-tree",
-  "version": "1.0.0",
+  "name": "et-select-tree",
+  "version": "1.0.4",
   "description": "",
   "main": "index.js",
   "scripts": {

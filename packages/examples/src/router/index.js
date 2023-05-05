@@ -1,6 +1,5 @@
 import Vue from "vue";
 import VueRouter from "vue-router";
-import HomeView from "../views/HomeView.vue";
 
 Vue.use(VueRouter);
 
@@ -8,7 +7,15 @@ const routes = [
   {
     path: "/",
     name: "home",
-    component: HomeView,
+    redirect: "/select-tree",
+    meta: {
+      hidden: true,
+    },
+  },
+  {
+    path: "/select-tree",
+    name: "select-tree",
+    component: () => import("@/views/SelectTree.vue"),
   },
 ];
 
@@ -19,3 +26,5 @@ const router = new VueRouter({
 });
 
 export default router;
+
+export { routes };

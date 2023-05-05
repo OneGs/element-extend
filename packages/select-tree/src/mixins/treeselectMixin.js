@@ -1042,16 +1042,18 @@ export default {
       if (this.single || this.flat || this.disableBranchNodes || this.valueConsistsOf === ALL) {
         nextSelectedNodeIds = nodeIdListOfPrevValue;
       } else if (this.valueConsistsOf === BRANCH_PRIORITY) {
-        nodeIdListOfPrevValue.forEach((nodeId) => {
-          nextSelectedNodeIds.push(nodeId);
-          const node = this.getNode(nodeId);
-          if (node.isBranch) {
-            this.traverseDescendantsBFS(node, (descendant) => {
-              // fix change flat to limit when has selected value. disabled will be selected
-              !descendant.isDisabled && nextSelectedNodeIds.push(descendant.id);
-            });
-          }
-        });
+        if (nodeIdListOfPrevValue && nodeIdListOfPrevValue.length) {
+          nodeIdListOfPrevValue.forEach((nodeId) => {
+            nextSelectedNodeIds.push(nodeId);
+            const node = this.getNode(nodeId);
+            if (node.isBranch) {
+              this.traverseDescendantsBFS(node, (descendant) => {
+                // fix change flat to limit when has selected value. disabled will be selected
+                !descendant.isDisabled && nextSelectedNodeIds.push(descendant.id);
+              });
+            }
+          });
+        }
       } else if (this.valueConsistsOf === LEAF_PRIORITY) {
         const map = createMap();
         const queue = nodeIdListOfPrevValue.slice();
