@@ -57,7 +57,7 @@ const Option = {
         "el-select-tree__option--selected": instance.isSelected(node),
         "el-select-tree__option--highlight": node.isHighlighted,
         "el-select-tree__option--matched": instance.localSearch.active && node.isMatched,
-        "is-flat-result": instance.flattenSearchResults || !instance.hasBranchNodes,
+        "is-flat-result": (instance.localSearch.active && instance.flattenSearchResults) || !instance.hasBranchNodes,
         "el-select-tree__option--hide": !this.shouldShow,
       };
 
