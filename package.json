@@ -5,6 +5,7 @@
   "main": "index.js",
   "scripts": {
     "bootstrap": "npx pnpm install",
+    "build": "npx pnpm run --filter examples build",
     "serve": "npx pnpm run --filter examples serve",
     "lint": "npx pnpm run --filter examples lint"
   },
