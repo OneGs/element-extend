@@ -1,4 +1,4 @@
-yarn build
+npm run build
 
 rm -rf /var/www/element/*
 
