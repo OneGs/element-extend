@@ -1,12 +1,13 @@
 <script>
 import Item from "./Item.vue";
-import treeMixin from "./treeMixin";
+import Tree from "./mixin/tree";
+import Check from "./mixin/check";
 import VueVirtualScrollList from "vue-virtual-scroll-list";
 
 export default {
   name: "VTree",
 
-  mixins: [treeMixin],
+  mixins: [Tree, Check],
 
   provide() {
     return {
@@ -25,19 +26,33 @@ export default {
     };
   },
 
-  created() {
-    // console.log(this.array2Tree(this.options));
+  methods: {
+    renderScrollList() {
+      if (this.localSearch.active && this.localSearch.noResults) {
+        return (
+          <div style={{ height: this.height }} class="empty-text">
+            <span>暂无数据</span>
+          </div>
+        );
+      }
+
+      return (
+        <vue-virtual-scroll-list
+          class="v-tree-list"
+          style={{ height: this.height }}
+          data-key={this.nodeKey}
+          data-sources={this.forest.normalizedOptions}
+          data-component={Item}
+        />
+      );
+    },
   },
 
   render() {
     return (
       <div class="v-tree">
-        <vue-virtual-scroll-list
-          class="v-tree-list"
-          data-key={this.nodeKey}
-          data-sources={this.forest.normalizedOptions}
-          data-component={Item}
-        />
+        {this.forest.selectedNodeIds.join(",")} -- selectedNodeIds
+        {this.renderScrollList()}
       </div>
     );
   },
@@ -47,8 +62,14 @@ export default {
 <style scoped lang="scss">
 .v-tree {
   .v-tree-list {
-    height: 300px;
     overflow-y: auto;
+  }
+
+  .empty-text {
+    font-size: 1rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
   }
 }
 </style>

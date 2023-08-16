@@ -79,6 +79,14 @@ export default {
     updatesReferenceElm() {
       this.doDestroy(true);
     },
+
+    boydOverflowHidden() {
+      document.body.style.overflow = "hidden";
+    },
+
+    bodyOverflowAuto() {
+      document.body.style.overflow = "auto";
+    },
   },
 
   mounted() {
@@ -93,6 +101,17 @@ export default {
     });
 
     this.$on("destroyPopper", this.destroyPopper);
+
+    if (this.appendToBody) {
+      this.$el.addEventListener("mouseenter", this.boydOverflowHidden);
+
+      this.$el.addEventListener("mouseleave", this.bodyOverflowAuto);
+    }
+  },
+
+  beforeDestroy() {
+    this.$el.removeEventListener("mouseenter", this.boydOverflowHidden);
+    this.$el.addEventListener("mouseleave", this.bodyOverflowAuto);
   },
 };
 </script>

@@ -1,4 +1,6 @@
 <script>
+import { CHECKED, INDETERMINATE } from "./constants";
+
 export default {
   name: "Item",
 
@@ -12,12 +14,16 @@ export default {
   },
 
   computed: {
+    raw() {
+      return this.source.raw;
+    },
+
     nodeLevel() {
-      return this.source._level;
+      return this.source.level;
     },
 
     hasChildren() {
-      return this.source._hasChildren;
+      return this.source.hasChildren;
     },
 
     indentLength() {
@@ -25,36 +31,74 @@ export default {
     },
 
     isExpanded() {
-      return this.source._isExpanded;
+      return this.source.isExpanded;
     },
 
     isFocused() {
-      return this.source._isFocused;
+      return this.source.isFocused;
     },
 
     isHighlight() {
       return this.root.highlightCurrent;
+    },
+
+    showCheckbox() {
+      return this.root.showCheckbox;
+    },
+
+    hasDisabledDescendants() {
+      return this.source.hasDisabledDescendants;
+    },
+
+    disabled() {
+      return (
+        this.root.disabled ||
+        this.source.isDisabled ||
+        this.hasDisabledDescendants
+      );
     },
   },
 
   created() {},
 
   methods: {
-    handlerIconClick() {
-      this.source._isExpanded = !this.source._isExpanded;
+    handlerIconClick(evt) {
+      evt.preventDefault();
+      evt.stopPropagation();
+      this.source.isExpanded = !this.isExpanded;
       this.root.updateNormalizeOptions();
       this.root.emitEvent("icon-click");
     },
 
-    handlerItemClick() {
-      if (this.root.oldSource) {
-        this.root.oldSource._isFocused = false;
+    handlerItemClick(isCheckClick = false) {
+      const { root } = this;
+
+      if (root.oldSource) {
+        root.oldSource.isFocused = false;
       }
 
-      this.source._isFocused = true;
-      this.root.emitEvent("node-click", this.source, this.root.oldSource);
+      this.source.isFocused = true;
+      root.emitEvent("node-click", this.source, root.oldSource);
 
-      this.root.oldSource = this.source;
+      // node-click交互方式
+      if (
+        /* 不能为Check */ !isCheckClick &&
+        /* 允许点击展开 */ (root.expandOnClickNode ||
+          /* 禁用选项 */ root.disabled ||
+          /* 禁止分支选项 */ this.hasDisabledDescendants)
+      ) {
+        root.toggleNode(this.source, !this.isExpanded);
+      } else {
+        if (root.showCheckbox) root.select(this.source);
+      }
+
+      root.oldSource = this.source;
+    },
+
+    handlerCheckBoxClick(evt) {
+      evt.preventDefault();
+      evt.stopPropagation();
+      this.handlerItemClick(true);
     },
 
     renderIcon() {
@@ -75,8 +119,26 @@ export default {
       return <div style={style} />;
     },
 
+    renderCheckbox() {
+      if (!this.showCheckbox) return;
+
+      const { root } = this;
+      const checkedState = root.forest.checkedStateMap[this.source.id];
+
+      return (
+        <ElCheckbox
+          style={{ marginRight: "4px", fontSize: "10px" }}
+          value={checkedState === CHECKED}
+          disabled={this.disabled}
+          indeterminate={checkedState === INDETERMINATE}
+          nativeOnMousedown={(evt) => evt.preventDefault()}
+          nativeOnClick={(evt) => this.handlerCheckBoxClick(evt)}
+        />
+      );
+    },
+
     renderSource() {
-      return <div class="node-label">{this.source.taskName}</div>;
+      return <div class="node-label">{this.source.label}</div>;
     },
   },
 
@@ -88,9 +150,10 @@ export default {
     };
 
     return (
-      <div class={classes} onClick={this.handlerItemClick}>
+      <div class={classes} onClick={() => this.handlerItemClick(false)}>
         {this.renderIndent()}
         {this.renderIcon()}
+        {this.renderCheckbox()}
         {this.renderSource()}
       </div>
     );
