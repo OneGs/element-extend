@@ -9,7 +9,7 @@ module.exports = {
 			env: {
 				node: true
 			},
-			files: ['.eslintrc.{js,cjs}'],
+			files: ['.eslintrc.{js,cjs}', 'vue.config.js', 'babel.config.js'],
 			parserOptions: {
 				sourceType: 'script'
 			}
@@ -17,7 +17,10 @@ module.exports = {
 	],
 	parserOptions: {
 		ecmaVersion: 'latest',
-		sourceType: 'module'
+		sourceType: 'module',
+		ecmaFeatures: {
+			jsx: true
+		}
 	},
 	plugins: ['vue'],
 	rules: {}

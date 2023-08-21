@@ -1,0 +1,28 @@
+{
+  "name": "example",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "serve": "vue-cli-service serve --disableHostCheck=true"
+  },
+  "dependencies": {
+    "core-js": "^3.8.3",
+    "element-ui": "^2.15.13",
+    "sass": "^1.62.0",
+    "sass-loader": "^13.2.2",
+    "vue": "^2.6.14",
+    "vue-router": "^3.5.1",
+    "vue-virtual-scroll-tree": "workspace:^",
+    "vuex": "^3.6.2"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.12.16",
+    "@vue/cli-plugin-babel": "~5.0.0",
+    "@vue/cli-plugin-router": "~5.0.0",
+    "@vue/cli-plugin-vuex": "~5.0.0",
+    "@vue/cli-service": "~5.0.0",
+    "vue-template-compiler": "^2.6.14"
+  },
+  "_id": "examples@0.1.0",
+  "readme": "ERROR: No README data found!"
+}
