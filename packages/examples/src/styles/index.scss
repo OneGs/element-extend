@@ -1,0 +1,22 @@
+a {
+  text-decoration: none;
+  color: black;
+
+  &:focus {
+    color: black;
+  }
+}
+
+::-webkit-scrollbar {
+  width: 5px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+  border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #F5F7FA;
+  border-radius: 10px;
+}

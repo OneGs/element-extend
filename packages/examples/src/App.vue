@@ -1,9 +1,9 @@
 <template>
 	<div id="app" class="app">
 		<div class="menu-right">
-			<el-menu v-model="menu">
-				<el-menu-item v-for="route in routes" :key="route.name" :index="route.name">
-					<router-link :to="route.path">{{ (route.meta && route.meta.title) || route.name }}</router-link>
+			<el-menu :default-active="menu" class="menu">
+				<el-menu-item v-for="route in routes" :key="route.name" :index="route.name" @click="onClick2Router(route)">
+					<span>{{ (route.meta && route.meta.title) || route.name }}</span>
 				</el-menu-item>
 			</el-menu>
 		</div>
@@ -18,7 +18,7 @@ import { routes } from '@/router';
 export default {
 	data() {
 		return {
-			menu: null,
+			menu: 'virtual-tree',
 			routes: []
 		};
 	},
@@ -29,15 +29,19 @@ export default {
 
 	mounted() {
 		this.menu = this.$route.name;
+	},
+
+	methods: {
+		onClick2Router(route) {
+			if (this.$route.path === route.path) return;
+
+			this.$router.push(route.path);
+		}
 	}
 };
 </script>
 
 <style>
-body {
-	margin: 0;
-}
-
 #app {
 	font-family: Avenir, Helvetica, Arial, sans-serif;
 	-webkit-font-smoothing: antialiased;
@@ -46,6 +50,9 @@ body {
 	width: 80%;
 	margin: 0 auto;
 	padding: 30px 0;
+	height: 100vh;
+	box-sizing: border-box;
+	overflow: hidden;
 }
 
 .app {
@@ -57,9 +64,14 @@ body {
 		margin-right: 10px;
 	}
 
+	.menu {
+		height: 100%;
+	}
+
 	.content-left {
 		flex: 1;
-		margin-left: 10px;
+		overflow: auto;
+		padding-right: 10px;
 	}
 }
 </style>

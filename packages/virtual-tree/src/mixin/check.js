@@ -186,6 +186,12 @@ export default {
 				const hasChanged = quickDiff(nodeIdsFromValue, this.internalValue);
 				if (hasChanged) this.fixSelectedNodeIds(nodeIdsFromValue);
 			}
+		},
+
+		valueFormat: {
+			handler() {
+				this.$emit('input', this.getValue());
+			}
 		}
 	},
 

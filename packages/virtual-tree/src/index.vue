@@ -58,6 +58,7 @@ export default {
 .v-tree {
 	.v-tree-list {
 		overflow-y: auto;
+		padding-right: 6px;
 	}
 
 	.empty-text {

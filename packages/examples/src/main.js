@@ -12,6 +12,12 @@ Vue.use(ElementUI);
 import VueVirtualScrollTree from 'vue-virtual-scroll-tree';
 Vue.use(VueVirtualScrollTree);
 
+// normalize.css
+import 'normalize.css';
+
+// styles
+import '@/styles/index.scss';
+
 Vue.config.productionTip = false;
 
 new Vue({

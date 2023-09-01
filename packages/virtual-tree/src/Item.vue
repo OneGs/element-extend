@@ -76,7 +76,7 @@ export default {
 
 			// eslint-disable-next-line vue/no-mutating-props
 			this.source.isFocused = true;
-			root.emitEvent('node-click', this.source, root.oldSource);
+			root.emitEvent('node-click', this.source.raw, root.oldSource && root.oldSource.raw);
 
 			// node-click交互方式
 			if (
@@ -136,7 +136,16 @@ export default {
 		},
 
 		renderSource() {
-			return <div class="node-label">{this.source.label}</div>;
+			const classes = {
+				'node-label': true,
+				'is-wrap-show-tip': this.root.lineWrapShowTip
+			};
+
+			return (
+				<div class={classes} title={this.source.label}>
+					{this.source.label}
+				</div>
+			);
 		}
 	},
 
@@ -146,6 +155,8 @@ export default {
 			'is-focused': this.isFocused,
 			'is-highlight': this.isHighlight && this.isFocused
 		};
+		const itemWrapClasses = this.root.itemWrapClass.split(',').filter(Boolean);
+		itemWrapClasses.forEach((className) => (classes[className] = true));
 
 		return (
 			<div class={classes} onClick={() => this.handlerItemClick(false)}>
@@ -165,6 +176,7 @@ export default {
 	display: flex;
 	align-items: center;
 	line-height: 2;
+	margin: 1px 0;
 	transition: all 0.08s ease-in-out;
 
 	&:hover {
@@ -184,6 +196,12 @@ export default {
 .node-label {
 	font-size: 14px;
 	margin-left: 3px;
+
+	&.is-wrap-show-tip {
+		overflow: hidden;
+		white-space: nowrap;
+		text-overflow: ellipsis;
+	}
 }
 
 .is-expanded {

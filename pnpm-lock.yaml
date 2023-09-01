@@ -38,6 +38,9 @@ importers:
       element-ui:
         specifier: ^2.15.13
         version: 2.15.13(vue@2.6.14)
+      normalize.css:
+        specifier: ^8.0.1
+        version: 8.0.1
       sass:
         specifier: ^1.62.0
         version: 1.62.0
@@ -4995,6 +4998,10 @@ packages:
 
   /normalize-wheel@1.0.1:
     resolution: {integrity: sha512-1OnlAPZ3zgrk8B91HyRj+eVv+kS5u+Z0SCsak6Xil/kmgEia50ga7zfkumayonZrImffAxPU/5WcyGhzetHNPA==}
+    dev: false
+
+  /normalize.css@8.0.1:
+    resolution: {integrity: sha512-qizSNPO93t1YUuUhP22btGOo3chcvDFqFaj2TRybP0DMxkHOCTYwp3n34fel4a31ORXy4m1Xq0Gyqpb5m33qIg==}
     dev: false
 
   /npm-run-path@2.0.2:

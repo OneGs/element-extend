@@ -28,9 +28,19 @@ export default {
 			default: () => ({})
 		},
 
+		itemWrapClass: {
+			type: String,
+			default: ''
+		},
+
+		lineWrapShowTip: {
+			type: Boolean,
+			default: true
+		},
+
 		highlightCurrent: {
 			type: Boolean,
-			default: false
+			default: true
 		},
 
 		defaultExpandAll: {
