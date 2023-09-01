@@ -4,6 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
+    "bootstrap": "pnpm install",
     "prepare": "husky install",
     "lint": "eslint --ext .ts,.tsx,.jsx,.js,.vue --fix --quiet ./packages",
     "serve": "pnpm run --filter example serve"
