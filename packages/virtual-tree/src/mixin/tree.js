@@ -100,6 +100,12 @@ export default {
 			default: () => ['label']
 		},
 
+		// searchText
+		searchText: {
+			type: String,
+			default: ''
+		},
+
 		/**
 		 * Disable the fuzzy matching functionality?
 		 */
@@ -178,6 +184,12 @@ export default {
 			this.handleLocalSearch();
 
 			this.$emit('search-change', this.trigger.searchQuery);
+		},
+
+		searchText: {
+			handler(val) {
+				this.filter(val);
+			}
 		}
 	},
 
@@ -229,7 +241,16 @@ export default {
 					/* custom filter */ (!this.filterNodeMethod || this.filterNodeMethod(node.raw) === true) &&
 					/* search filter */ (!this.localSearch.active || this.shouldOptionBeIncludedInSearchResult(node))
 				) {
-					array.push(node);
+					// reset query
+					if (!this.localSearch.active) {
+						array.push(node);
+					} else if (
+						// select when not flattenSearchResults and is flattenSearchResults union with isMatched
+						!this.flattenSearchResults ||
+						(this.flattenSearchResults && node.isMatched)
+					) {
+						array.push(node);
+					}
 
 					// 折叠、展开有待优化
 					if (node.hasChildren && node.isExpanded) {
@@ -497,7 +518,6 @@ export default {
 
 					// branch node expand default
 					if (node.isMatched && node.isBranch) {
-						node.isExpandedOnSearch = true;
 						node.showAllChildrenOnSearch = true;
 					}
 				}
@@ -531,12 +551,14 @@ export default {
 		},
 
 		shouldOptionBeIncludedInSearchResult(node) {
+			// if (node.label.includes('洞口')) {
+			// }
 			// 0) the searchQuery is none
 			if (!this.trigger.searchQuery) return true;
 			// 1) This option is matched.
 			if (node.isMatched) return true;
 			// 2) This option is not matched, but has matched descendant(s).
-			if (node.isBranch && node.hasMatchedDescendants && !this.flattenSearchResults) {
+			if (node.isBranch && node.hasMatchedDescendants) {
 				return true;
 			}
 			// 3) This option's parent has no matched descendants,

@@ -27,6 +27,8 @@ export default {
 		},
 
 		indentLength() {
+			if (!this.hasIndentAndIcon) return 12;
+
 			return this.hasChildren ? 12 * this.nodeLevel : 12 * this.nodeLevel + 24;
 		},
 
@@ -52,6 +54,10 @@ export default {
 
 		disabled() {
 			return this.root.disabled || this.source.isDisabled || this.hasDisabledDescendants;
+		},
+
+		hasIndentAndIcon() {
+			return !(this.root.localSearch.active && this.root.flattenSearchResults);
 		}
 	},
 
@@ -161,7 +167,7 @@ export default {
 		return (
 			<div class={classes} onClick={() => this.handlerItemClick(false)}>
 				{this.renderIndent()}
-				{this.renderIcon()}
+				{this.hasIndentAndIcon && this.renderIcon()}
 				{this.renderCheckbox()}
 				{this.renderSource()}
 			</div>
