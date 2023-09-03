@@ -113,6 +113,39 @@
 				</div>
 			</el-col>
 		</el-row>
+
+		<h2>搜索</h2>
+		<div style="line-height: 2">
+			<div>提供了丰富的搜索功能。通过matchKeys（默认为label）可以设置匹配字段。</div>
+		</div>
+		<el-row class="example-item">
+			<el-col :span="6" class="col-item">
+				<vue-virtual-scroll-tree
+					height="360px"
+					showCheckbox
+					:options="treeOptions"
+					:normalizer="treeNormalizer"
+					itemWrapClass="item-style"
+					:searchText="searchFilter.name"
+					v-bind="searchFilterCheck"
+				/>
+			</el-col>
+			<el-col :span="18" class="col-item">
+				<div style="padding: 0 20px; line-height: 2">
+					<el-checkbox-group v-model="searchFilter.check">
+						<el-checkbox label="disableFuzzyMatching">禁用模糊匹配（默认）</el-checkbox>
+						<el-checkbox label="flattenSearchResults">搜索平铺结果</el-checkbox>
+						<el-checkbox label="searchNested">开启深度搜索</el-checkbox>
+					</el-checkbox-group>
+
+					<el-form inline style="margin-top: 10px">
+						<el-form-item label="名称">
+							<el-input v-model="searchFilter.name" placeholder="输入关键字进行过滤" clearable size="small" />
+						</el-form-item>
+					</el-form>
+				</div>
+			</el-col>
+		</el-row>
 	</div>
 </template>
 
@@ -141,8 +174,24 @@ export default {
 				valueFormat: 'id|array',
 				sortValueBy: 'ORDER_SELECTED',
 				valueConsistsOf: 'BRANCH_PRIORITY'
+			},
+			//search
+			searchFilter: {
+				name: '',
+				check: ['disableFuzzyMatching']
 			}
 		};
+	},
+
+	computed: {
+		searchFilterCheck() {
+			if (!this.searchFilter.check.length) return {};
+
+			return this.searchFilter.check.reduce((obj, item) => {
+				obj[item] = true;
+				return obj;
+			}, {});
+		}
 	},
 
 	methods: {
