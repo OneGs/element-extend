@@ -1,6 +1,6 @@
 {
   "name": "vue-2-virtual-scroll-tree",
-  "version": "1.0.0",
+  "version": "1.0.01",
   "description": "",
   "main": "index.js",
   "scripts": {
@@ -13,5 +13,9 @@
   },
   "peerDependencies": {
     "element-ui": "^2.15.13"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/OneGs/element-extend"
   }
 }
