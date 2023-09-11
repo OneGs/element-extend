@@ -208,8 +208,14 @@ export default {
 
 			if (nextState) {
 				this._selectNode(node);
+				this.$emit(
+					'selected',
+					node,
+					Object.keys(this.forest.selectedNodeMap).map((_) => this.getNode(_))
+				);
 			} else {
 				this._deselectNode(node);
+				this.$emit('deselected', node);
 			}
 
 			this.buildForestState();

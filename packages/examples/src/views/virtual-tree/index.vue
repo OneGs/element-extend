@@ -46,6 +46,7 @@
 					:valueFormat="selectMode.valueFormat"
 					:valueConsistsOf="selectMode.valueConsistsOf"
 					itemWrapClass="item-style"
+					@selected="handler2Select"
 				/>
 			</el-col>
 			<el-col :span="18" class="col-item">
@@ -218,6 +219,10 @@ export default {
 			if (typeof first === 'string') return this.selectMode.value;
 
 			return this.selectMode.value.map((val) => val.raw.taskName);
+		},
+
+		handler2Select(node, nodes, status) {
+			console.log(node, nodes, status);
 		}
 	},
 

@@ -28,10 +28,10 @@ export default {
 
 	methods: {
 		renderScrollList() {
-			if (this.localSearch.active && this.localSearch.noResults) {
+			if (!this.options.length || (this.localSearch.active && this.localSearch.noResults)) {
 				return (
 					<div style={{ height: this.height }} class="empty-text">
-						<span>暂无数据</span>
+						<el-empty description={this.emptyText} />
 					</div>
 				);
 			}

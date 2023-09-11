@@ -13,19 +13,9 @@ export default {
 			default: () => []
 		},
 
-		nodeKey: {
-			type: String,
-			default: 'id'
-		},
-
 		emptyText: {
 			type: String,
 			default: '暂无数据'
-		},
-
-		props: {
-			type: Object,
-			default: () => ({})
 		},
 
 		itemWrapClass: {
@@ -135,6 +125,8 @@ export default {
 
 	data() {
 		return {
+			nodeKey: 'id',
+
 			trigger: {
 				// Is the control focused?
 				isFocused: false,
