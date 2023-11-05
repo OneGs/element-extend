@@ -12,8 +12,8 @@
     "sass": "^1.62.0",
     "sass-loader": "^13.2.2",
     "vue": "^2.6.14",
+    "vue-2-virtual-scroll-tree": "^1.0.1",
     "vue-router": "^3.5.1",
-    "vue-2-virtual-scroll-tree": "workspace:^",
     "vuex": "^3.6.2"
   },
   "devDependencies": {

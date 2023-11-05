@@ -50,12 +50,12 @@ importers:
       vue:
         specifier: ^2.6.14
         version: 2.6.14
+      vue-2-virtual-scroll-tree:
+        specifier: ^1.0.1
+        version: 1.0.1(element-ui@2.15.13)
       vue-router:
         specifier: ^3.5.1
         version: 3.5.1(vue@2.6.14)
-      vue-virtual-scroll-tree:
-        specifier: workspace:^
-        version: link:../virtual-tree
       vuex:
         specifier: ^3.6.2
         version: 3.6.2(vue@2.6.14)
@@ -6687,6 +6687,15 @@ packages:
     resolution: {integrity: sha512-BNGbWLfd0eUPabhkXUVm0j8uuvREyTh5ovRa/dyow/BqAbZJyC+5fU+IzQOzmAKzYqYRAISoRhdQr3eIZ/PXqg==}
     engines: {node: '>= 0.8'}
     dev: true
+
+  /vue-2-virtual-scroll-tree@1.0.1(element-ui@2.15.13):
+    resolution: {integrity: sha512-gLgxEbU5SQHbrj7K5l/TeximCSxzDhkvvIewDc7eyM69eGrD30mVhNGGLvvLnwUGmnqrpd+LpqAKIH44n7/1yQ==}
+    peerDependencies:
+      element-ui: ^2.15.13
+    dependencies:
+      element-ui: 2.15.13(vue@2.6.14)
+      vue-virtual-scroll-list: 2.3.5
+    dev: false
 
   /vue-eslint-parser@9.3.1(eslint@8.47.0):
     resolution: {integrity: sha512-Clr85iD2XFZ3lJ52/ppmUDG/spxQu6+MAeHXjjyI4I1NUYZ9xmenQp4N0oaHJhrA8OOxltCVxMRfANGa70vU0g==}
