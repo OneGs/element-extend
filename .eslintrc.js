@@ -9,7 +9,7 @@ module.exports = {
 			env: {
 				node: true
 			},
-			files: ['.eslintrc.{js,cjs}', 'vue.config.js', 'babel.config.js'],
+			files: ['.eslintrc.{js,cjs}', 'vue.config.js', 'babel.config.js', 'rollup.config.js'],
 			parserOptions: {
 				sourceType: 'script'
 			}

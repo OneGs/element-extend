@@ -9,7 +9,7 @@ import 'element-ui/lib/theme-chalk/index.css';
 Vue.use(ElementUI);
 
 // vue-virtual-scroll-tree
-import VueVirtualScrollTree from 'vue-2-virtual-scroll-tree';
+import VueVirtualScrollTree from '../../virtual-tree/dist/index.mjs';
 Vue.use(VueVirtualScrollTree);
 
 // normalize.css
