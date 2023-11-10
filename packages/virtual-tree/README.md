@@ -1,21 +1,61 @@
-# 虚拟树
+# vue-2-virtual-scroll-tree
 
-element-plus中提供了一个虚拟树，针对大量数据的处理做了优化。而elementUi中则缺少此类组件，因此vue-virtual-scroll-tree将提供该项能力。
+[//]: # (element-plus中提供了一个虚拟树，针对大量数据的处理做了优化。而elementUi中则缺少此类组件，因此vue-virtual-scroll-tree将提供该项能力。)
+ElementPLus provide a [virtualized tree](https://element-plus.org/zh-CN/component/tree-v2.html) to work out a mount of
+data. ElementUI don`t has the same component so far.
 
-## 基础用法
+Therefore,vue-2-virtual-scroll-tree implement it.
 
-options接受一个数组列表，每一行数据包含了父子关系，vue-virtual-scroll-tree内部会自动将其转化未一棵树从而渲染。
+# Table of Contents
 
-默认的父子关系为：{ id, parentId, label } 中的parentId，利用normalizer则可以自定义这些值。
+1. [Advantages](#Advantages)
+2. [Installation](#Installation)
+3. [Usage](#Usage)
+    1. [Import](#Import)
+    2. [Basic](#Usage)
+    3. [Selection](#Selection)
+    4. [Props](#Props)
+    5. [Events](#Events)
+    6. [Methods](#Methods)
+
+## Advantages
+
+1. only 1 required props,sample and easy to use
+2. automatically calculate item size,free hands
+3. complex interactive operation,including singles election,multi selection,selection without children,and on...
+
+## Installation
+
+```shell
+npm i vue-2-virtual-scroll-tree
+```
+
+## Usage
+
+### Import
+
+```vue
+import Vue from 'vue'
+import Vue2VirtualScrollTree from 'vue2-virtual-scroll-tree'
+
+Vue.use(Vue2VirtualScroll)
+```
+
+### Basic
+
+It accepts a option prop that must be a List.The list is a object with required three key respectively are id,parentId
+and label.
+
+Then list will be transformed to a tree in rending. example:
 
 ```vue
 
 <template>
   <div class="container">
     <vue-virtual-scroll-tree
-        height="360px"
-        :options="treeOptions"
-        :normalizer="treeNormalizer"
+      height="360px"
+      :options="treeOptions"
+      :normalizer="treeNormalizer"
     />
   </div>
 </template>
@@ -25,112 +65,153 @@ options接受一个数组列表，每一行数据包含了父子关系，vue-vir
     data() {
       return {
         treeOptions: [
-          {name: '根节点', parentId: '0', id: 'root'},
-          {name: '叶子节点', parentId: 'root', id: 1}
+          { name: 'Root node', parentId: '0', id: 'root' },
+          { name: 'Leaf node', parentId: 'root', id: 1 }
         ]
       }
     },
 
     methods: {
-      treeNormalizer() {
-        return {label: item.name};
+      treeNormalizer(item) {
+        return { label: item.name };
       }
     }
   }
 </script>
 ```
 
-## 选择模式
+you can see there don`t have standard object key in label,instead of name.But the code have no any error report.
 
-vue-virtual-scroll-tree分为单选和多选两种模式。
+This is because vue-2-virtual-scroll-tree can receive a prop named normalizer which type is function.It must return the
+standard object key by modifying params from original opt
 
-单选相对简单，允许独立选择分支节点和叶子节点。
+### Selection
 
-多选模式则会复杂很多，比如选择模式有常规模式和平铺模式。常规模式为选中分支节点，子节点会相对应的被选中；选中子节点对应父节点也会选中。
+vue-2-virtual-scroll-tree support complex selection.It referred to [vue-treeselect](https://vue-treeselect.js.org/).
 
-而平铺模式则无论选择分支节点还是子节点都不会互相影响，完全独立。
+There provide several kinds of mode to select on prop valueConsistsOf:
 
-另外，vue-virtual-scroll-tree还提供对v-model提供了不同选择类型：
+1. ALL: normal mode,return all selected node including associated children nodes
+2. ALL_WITH_INDETERMINATE: return all selected node including associated children nodes and half selected breach nodes
+3. LEAF_PRIORITY: return all selected node including only leaf nodes,excluding all branch nodes selected in spite of
+   each other
+4. BRANCH_PRIORITY: return all branch nodes which every child must be selected.if not,return leaf nodes rather than
+   self.(it is default)
 
-1. 分支优先：当子节点全部选中时，只返回分支节点（默认）
-2. 叶子优先：当子节点全部选中时，只返回叶子节点，不返回分支节点
-3. 所有选中：标准模式，返回选中节点
-4. 所有选中以及半选中：标准模式，返回选中节点同时返回半选中的分支节点
+```vue
 
-以及对选中值的排序：
+<template>
+  <div class="container">
+    <vue-virtual-scroll-tree
+      height="360px"
+      v-model="selectMode"
+      :showCheckbox="true"
+      :options="treeOptions"
+      :normalizer="treeNormalizer"
+      :valueConsistsOf="'BRANCH_PRIORITY'"
+    />
+  </div>
+</template>
 
-1. 按选择顺序：字面意思，选择时决定顺序（默认）
-2. 按层级深度：层级越高排序越靠后，同级按显示循序排序
-3. 按索引：按字母从小到到排序 A->B，中文排序则会存在问题
+<script>
+  export default {
+    data() {
+      return {
+        selectMode: {},
+        treeOptions: [
+          { name: "Root node", parentId: "0", id: "root" },
+          { name: "Leaf node", parentId: "root", id: 1 }
+        ]
+      };
+    },
 
-## 过滤搜索
+    methods: {
+      treeNormalizer(item) {
+        return { label: item.name };
+      }
+    }
+  };
+</script>
+```
 
-对于大量的数据，如果没有搜索功能，让用户去自己找相比是灾难性的。
+### Props
 
-vue-virtual-scroll-tree支持强大的搜索功能。默认开启模糊搜索，即不完全匹配，而是根据输入的字符截取搜索。
+| prop                              | describe                                        | type            | optional                          | default                         |
+|:----------------------------------|-------------------------------------------------|-----------------|-----------------------------------|---------------------------------|
+| value / v-model                   | value                                           | string / number | --                                |
+| height                            | height                                          | string          | --                                | 300px                           |
+| itemWrapClass                     | custom item style                               | string          | --                                | --                              |
+| lineWrapShowTip                   | show text tip                                   | boolean         | --                                | true                            |
+| highlightCurrent                  | highlight current row                           | boolean         | --                                | true                            |
+| defaultExpandAll                  | expand all branch node                          | boolean         | --                                | true                            |
+| defaultExpandedKeys               | expand branch node by keys                      | array           | --                                | --                              |
+| filterNodeMethod                  | filter node                                     | function        | --                                | --                              |
+| iconClass                         | icon in left                                    | string          | --                                | el-icon-caret-right             |
+| expandOnClickNode                 | expand row when click node                      | boolean         | --                                | true                            |
+| disableBranchNodes                | disable branch node                             | boolean         | --                                | false                           |
+| normalizer                        | custom object of options item                   | function        | --                                | --                              |
+| defaultParentId                   | tell parentId when struct tree                  | string          | --                                | 0                               |
+| matchKeys                         | the label when search                           | string          | --                                | label                           |
+| disableFuzzyMatching              | disable fuzzy match                             | boolean         | --                                | false                           |
+| flattenSearchResults              | flat search result                              | boolean         | --                                | false                           |
+| searchNested                      | Depth search                                    | boolean         | --                                | false                           |
+| showCheckbox                      | is can select                                   | boolean         | --                                | false                           |
+| disabled                          | disable select                                  | boolean         | --                                | false                           |
+| multiple                          | enable multi search                             | boolean         | --                                | true                            |
+| autoSelectAncestors               | auo select ancestors（only flat mode）            | boolean         | --                                | false                           |
+| autoSelectDescendants             | auo select descendants（only flat mode）          | boolean         | --                                | false                           |
+| autoDeselectAncestors             | auo deselect ancestors（only flat mode）          | boolean         | --                                | false                           |
+| autoDeselectDescendants           | auo deselect descendants（only flat mode）        | boolean         | --                                | false                           |
+| allowSelectingDisabledDescendants | auo select disabled descendants（only flat mode） | boolean         | --                                | false                           |
+| flat                              | flat mode                                       | boolean         | --                                | false                           |
+| valueFormat                       | format value                                    | string          | [string \| array]   \| id \|array | [id                  \| object] |
+| delimiter                         | format value by delimiter                       | string          | --                                | ,                               |
+| valueConsistsOf                   | v-model value formatter                         | string          | valueConsistsOf mode              | BRANCH_PRIORITY                 | 
+| sortValueBy                       | v-model value sorted                            | string          | sortValueBy mode                  | ORDER_SELECTED                  |
 
-同时支持嵌入搜索，可以先输入”根节点“，输入空格后，再接子级需要的查询的值，”叶子节点“。
+valueConsistsOf mode
 
-## 属性
+| name                   | describe                                                                                                             |
+|------------------------|----------------------------------------------------------------------------------------------------------------------|
+| ALL                    | normal mode,return all selected node including associated children nodes                                             |
+| BRANCH_PRIORITY        | return all branch nodes which every child must be selected.if not,return leaf nodes rather than self.(it is default) |
+| LEAF_PRIORITY          | return all selected node including only leaf nodes,excluding all branch nodes selected in spite of each other        |
+| ALL_WITH_INDETERMINATE | return all selected node including associated children nodes and half selected breach nodes                          |
 
-| 参数                                | 说明                   | 类型              | 可选值                                                         | 默认值                 |
-|:----------------------------------|----------------------|-----------------|-------------------------------------------------------------|---------------------|
-| value / v-model                   | 绑定值                  | string / number | --                                                          |
-| height                            | 高度                   | string          | --                                                          | 300px               |
-| itemWrapClass                     | 行绑定样式                | string          | --                                                          | --                  |
-| lineWrapShowTip                   | 是否显示tip              | boolean         | --                                                          | true                |
-| highlightCurrent                  | 是否高亮当前行              | boolean         | --                                                          | true                |
-| defaultExpandAll                  | 默认展开所有节点             | boolean         | --                                                          | true                |
-| defaultExpandedKeys               | 默认展开的节点keys          | array           | --                                                          | --                  |
-| filterNodeMethod                  | 对节点进行过滤              | function        | --                                                          | --                  |
-| iconClass                         | 左侧展开图标class          | string          | --                                                          | el-icon-caret-right |
-| expandOnClickNode                 | 点击node是否是展开节点        | boolean         | --                                                          | true                |
-| disableBranchNodes                | 禁用所有的分支节点            | boolean         | --                                                          | false               |
-| normalizer                        | 自定义关键字               | function        | --                                                          | --                  |
-| defaultParentId                   | 默认的parentId值，用于寻找根节点 | string          | --                                                          | 0                   |
-| matchKeys                         | 过滤字段，搜索时过滤用          | string          | --                                                          | label               |
-| disableFuzzyMatching              | 禁用模糊匹配               | boolean         | --                                                          | false               |
-| flattenSearchResults              | 是否平铺搜索的结果            | boolean         | --                                                          | false               |
-| searchNested                      | 是否内嵌搜索               | boolean         | --                                                          | false               |
-| showCheckbox                      | 是否显示选择框              | boolean         | --                                                          | false               |
-| disabled                          | 是否禁用选择框              | boolean         | --                                                          | false               |
-| multiple                          | 是否多选                 | boolean         | --                                                          | true                |
-| autoSelectAncestors               | 自动选择祖先（限平铺模式）        | boolean         | --                                                          | false               |
-| autoSelectDescendants             | 自动选择后代（限平铺模式）        | boolean         | --                                                          | false               |
-| autoDeselectAncestors             | 自动反选祖先（限平铺模式）        | boolean         | --                                                          | false               |
-| autoDeselectDescendants           | 自动反选后代（限平铺模式）        | boolean         | --                                                          | false               |
-| allowSelectingDisabledDescendants | 自动选择被禁用节点（限平铺模式）     | boolean         | --                                                          | false               |
-| flat                              | 平铺模式                 | boolean         | --                                                          | false               |
-| valueFormat                       | 值格式化                 | string          | [id                                                         | object]             |[string | array] | id|array |
-| delimiter                         | 格式化分隔符               | string          | --                                                          | ,                   |
-| valueConsistsOf                   | 值组织方式                | string          | ALL, BRANCH_PRIORITY, LEAF_PRIORITY, ALL_WITH_INDETERMINATE | BRANCH_PRIORITY     | 
-| sortValueBy                       | 值排序方式                | string          | ORDER_SELECTED, LEVEL, INDEX                                | ORDER_SELECTED      |
+sortValueBy mode
 
-## events
+| name           | describe                                                                                    |
+|----------------|---------------------------------------------------------------------------------------------|
+| ORDER_SELECTED | on the basis of you click order                                                             |
+| LEVEL          | sorted by level of tree and sorted by INDEX in equal level: Level of option: C 🡒 BB 🡒 AAA |
+| INDEX          | sorted by index: Index of option: AAA 🡒 BB 🡒 C                                            |
 
-| 事件名称          | 说明       | 回调参数                  |
-|---------------|----------|-----------------------|
-| node-click    | 点击node   | (raw, oldRwa)         |
-| icon-click    | 点击左侧展开图标 | (expandStatus)        |
-| search-change | 搜索过滤     | (searchText)          |
-| selected      | 节点选中     | (node, nodes, status) |
-| deselected    | 节点取消     | (node)                |
+options above on:
 
-## methods
+1. A
+    1. AA
+        1. AAA
+    2. AB
+2. B
+    1. BA
+    2. BB
+3. c
 
-| 事件名称           | 说明     | 参数                   |
-|----------------|--------|----------------------|
-| getNode        | 获取node | (nodeId)             |
-| toggleNode     | 点击node | (nodeOrKey, status)  |
-| toggleNodes    | 点击node | (nodeOrKeys, status) |
-| toggleNodesAll | 点击node | ()                   |
+### Events
 
-## Q&A
+| event name    | describe        | params                |
+|---------------|-----------------|-----------------------|
+| node-click    | click node      | (raw, oldRwa)         |
+| icon-click    | click left icon | (expandStatus)        |
+| search-change | filter search   | (searchText)          |
+| selected      | selected        | (node, nodes, status) |
+| deselected    | deselected      | (node)                |
 
-1. 如何做options的单个更新？而非全局更新？
+### Methods
 
-vue-virtual-scroll-tree内部对options进行了深度监测，options变化则会重新进行渲染整棵树。
-
-Vue在dom更新事会做diff比较，那么仅仅是单个值的变化的开销集中在运行上，而非dom的更新，这个速度是很快的。
-
-除了单个更新，如果要添加，则直接将新的数据推入到options即可。删除也很简单，splice即可，但开销可能会相对较高。
+| event name     | describe            | params               |
+|----------------|---------------------|----------------------|
+| getNode        | ge node             | (nodeId)             |
+| toggleNode     | toggle node status  | (nodeOrKey, status)  |
+| toggleNodes    | toggle nodes status | (nodeOrKeys, status) |
+| toggleNodesAll | toggle all nodes    | ()                   |

@@ -5,7 +5,7 @@ Common tools packaged independently, published independently and is lightweight 
 
 # Table of Contents
 1. [vue-2-virtual-scroll-tree](#vue-2-virtual-scroll-tree)
-2. [JSON to Input Form](#JSON to Input Form)
+2. [json to input form](#json to input form)
 
 ## vue-2-virtual-scroll-tree
 
@@ -27,6 +27,6 @@ vue-2-virtual-scroll-tree learn a lot from [vue-treeselect](https://vue-treesele
 
 more details：[vue-2-virtual-scroll-tree](./packages/virtual-tree/README.md)
 
-## JSON to Input Form
+## json to input form
 
 
