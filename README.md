@@ -5,7 +5,6 @@ Common tools packaged independently, published independently and is lightweight 
 
 # Table of Contents
 1. [vue-2-virtual-scroll-tree](#vue-2-virtual-scroll-tree)
-2. [json to input form](#json to input form)
 
 ## vue-2-virtual-scroll-tree
 
@@ -26,7 +25,5 @@ Unfortunately, There have lots of third-party virtual-tool can help, but always 
 vue-2-virtual-scroll-tree learn a lot from [vue-treeselect](https://vue-treeselect.js.org/)  it is nice package to solve complex drop down to select problems. 
 
 more details：[vue-2-virtual-scroll-tree](./packages/virtual-tree/README.md)
-
-## json to input form
 
 
